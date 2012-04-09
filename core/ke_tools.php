@@ -14,7 +14,7 @@ class ke_tools
          else
             return 'FALSE';
       }
-      else if( count(explode('-', $v)) == 3 ) /// es una fecha
+      else if( preg_match('/^([0-9]{1,2})-([0-9]{1,2})-([0-9]{4}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})$/i', $v) ) /// es una fecha
          return "'".Date('Y-m-d H:i:s', strtotime($v))."'";
       else
          return "'".$v."'";
