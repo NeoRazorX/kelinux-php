@@ -1,0 +1,37 @@
+<div id="shadow_box"></div>
+<form name="f_crear_pregunta" action="{$kec->get_path()}/create" method="post">
+<input type="hidden" name="tipo" value="pregunta"/>
+<div class="popup" id="popup_create">
+   <h1>
+      Crear pregunta:
+      <span>
+         <a class="link" href="{$kec->get_path()}/help#bbcode" target="_Blank">BBcode habilitado</a>
+         <input type="submit" value="crear"/>
+      </span>
+   </h1>
+   <textarea name="pregunta" cols="90" rows="20"></textarea>
+   <b>Comunidades:</b>
+   {loop="$kec->community->all()"}
+      <input id="ch_comm_{$value->id}" type="checkbox" name="community[]" value="{$value->id}"/>
+      <label for="ch_comm_{$value->id}">{$value->name}</label> &nbsp;
+   {/loop}
+</div>
+</form>
+<div class="popup" id="popup_chat">
+   <iframe id="iframe_chat" width="800" height="550" frameborder="0"></iframe>
+</div>
+</div>
+{if condition="$kec->is_db_history_enabled()"}
+   <ul>
+      {loop="$kec->db_history()"}
+      <li>{$value}</li>
+      {/loop}
+   </ul>
+{/if}
+<div class="footer">
+   Tiempo de ejecución: {$kec->duration()} |
+   Selects: {$kec->db_selects()} |
+   Transactions: {$kec->db_transactions()}
+</div>
+</body>
+</html>

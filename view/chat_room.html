@@ -1,0 +1,76 @@
+{if condition="$kec->full_html"}
+<html>
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+      <link href="{$kec->get_path()}/view/css/core.css" rel="stylesheet" type="text/css" />
+      <script type="text/javascript" src="{$kec->get_path()}/view/js/jquery.js"></script>
+      <script type="text/javascript">
+         var load_timeout = setTimeout('load_chat_log()', 20000);
+         function load_chat_log() {
+            $.ajax({
+               type: 'POST',
+               url: '{$kec->url()}',
+               dataType: 'html',
+               data: 'reload=TRUE',
+               success: function(datos) {
+                  $("#div_chat_history").html(datos);
+                  load_timeout = setTimeout('load_chat_log()', 20000);
+               }
+            });
+         }
+         $(document).ready(function() {
+            document.f_chat.comment.focus();
+         });
+      </script>
+   </head>
+   <body class="chat">
+      <form name="f_chat" action="{$kec->url()}" method="post">
+         <h1>
+            Chat:
+            <span>
+               <a class="link" href="{$kec->get_path()}/help#bbcode" target="_Blank">BBcode habilitado</a>
+               <input type="submit" value="enviar"/>
+            </span>
+         </h1>
+         <textarea name="comment" rows="3" cols="90"></textarea>
+      </form>
+      <div id="div_chat_history" class="answers">
+      {loop="$kec->chat->get_history()"}
+         {if condition="$counter%2+1==1"}
+         <div class="answer_box">
+         {else}
+         <div class="answer_box2">
+         {/if}
+            <div class="answer">
+               {if condition="$value->user"}
+                  <a class="nick" href="{$value->user->url()}" target="_Blank">{$value->user->nick}</a>
+               {else}
+                  <b>{$value->nick}</b>
+               {/if}
+               <span class="date">{$value->timesince()}</span>
+               <div class="long_text">{$value->text2html()}</div>
+            </div>
+         </div>
+      {/loop}
+      </div>
+   </body>
+</html>
+{else}
+   {loop="$kec->chat->get_history()"}
+      {if condition="$counter%2+1==1"}
+         <div class="answer_box">
+      {else}
+         <div class="answer_box2">
+      {/if}
+            <div class="answer">
+               {if condition="$value->user"}
+                  <a class="nick" href="{$value->user->url()}" target="_Blank">{$value->user->nick}</a>
+               {else}
+                  <b>{$value->nick}</b>
+               {/if}
+               <span class="date">{$value->timesince()}</span>
+               <div class="long_text">{$value->text2html()}</div>
+            </div>
+         </div>
+   {/loop}
+{/if}

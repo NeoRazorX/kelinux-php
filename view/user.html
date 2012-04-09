@@ -1,0 +1,54 @@
+{include="header"}
+
+{if condition="$kec->suser"}
+<div class="rounded">
+   <h1>
+      <a href="{$kec->url()}">{$kec->suser->nick}</a>
+      <span>{$kec->suser->points} puntos</span>
+   </h1>
+   <span class="date">Creado {$kec->suser->created_timesince()}</span>
+   Es miembro de:
+   {loop="$kec->suser->get_communities()"}
+      <a class="community" href="{$value->url()}">{$value->name}</a>
+   {/loop}
+</div>
+
+<div class="rounded">
+   <h1>Preguntas creadas o contestadas por {$kec->suser->nick}:</h1>
+   <div class="questions">
+      {loop="$kec->resultado"}
+      <div class="question_box">
+         <div class="reward">{$value->reward}</div>
+         <a class="question" href="{$value->url()}">
+            <span class="tag">{$value->get_status()}</span>
+            {if condition="$value->user"}
+               <span class="nick">{$value->user->nick}</span>
+            {else}
+               <b>usuario anónimo</b>
+            {/if}
+            <span class="num_answers">{$value->num_answers}</span>
+            <span class="date">{$value->updated_timesince()}</span>
+            <div class="resume">{$value->resume()}</div>
+         </a>
+      </div>
+      {/loop}
+   </div>
+   
+   <table width="100%">
+      <tr>
+         <td>
+            {if condition="$kec->anterior_url()!=''"}
+            <a class="next" href="{$kec->anterior_url()}">anterior</a>
+            {/if}
+         </td>
+         <td align="right">
+            {if condition="$kec->siguiente_url()!=''"}
+            <a class="next" href="{$kec->siguiente_url()}">siguiente</a>
+            {/if}
+         </td>
+      </tr>
+   </table>
+</div>
+{/if}
+
+{include="footer"}

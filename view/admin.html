@@ -1,0 +1,42 @@
+{include="header"}
+
+{if condition="$kec->acceso"}
+<div class="rounded">
+   <h1>Administración</h1>
+   {if condition="$kec->is_db_history_enabled()"}
+      <a href="{$kec->url()}/disable_db_history">Desactivar historial SQL</a>
+   {else}
+      <a href="{$kec->url()}/enable_db_history">Activar historial SQL</a>
+   {/if}
+   | <a href="{$kec->url()}/clean_chat">Borrar el historial del chat</a>
+</div>
+
+<div class="rounded">
+   <h1>Nuevos usuarios:</h1>
+   <ul class="horizontal">
+      {loop="$kec->user->new_users()"}
+      <li><a href="{$value->url()}">{$value->nick}</a> ({$value->created_timesince()})</li>
+      {/loop}
+   </ul>
+</div>
+
+<div class="rounded">
+   <h1>Ultimos logins:</h1>
+   <ul class="horizontal">
+      {loop="$kec->user->last_logged()"}
+      <li><a href="{$value->url()}">{$value->nick}</a> ({$value->last_log_in_timesince()})</li>
+      {/loop}
+   </ul>
+</div>
+
+<div class="rounded">
+   <h1>TOP usuarios:</h1>
+   <ul class="horizontal">
+      {loop="$kec->user->top_users()"}
+      <li><a href="{$value->url()}">{$value->nick}</a> ({$value->points})</li>
+      {/loop}
+   </ul>
+</div>
+{/if}
+
+{include="footer"}

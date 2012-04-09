@@ -1,0 +1,88 @@
+{include="header"}
+
+{if condition="$kec->user"}
+<div class="rounded">
+   <h1>
+      Últimas preguntas que has creado o contestado:
+      <span><a class="link" href="{$kec->user->url()}">ver todas tus preguntas</a></span>
+   </h1>
+   <div class="questions">
+      {loop="$kec->user->get_questions(0,4)"}
+      <div class="question_box">
+         <div class="reward">{$value->reward}</div>
+         <a class="question" href="{$value->url()}">
+            <span class="tag">{$value->get_status()}</span>
+            {if condition="$value->user"}
+               <span class="nick">{$value->user->nick}</span>
+            {else}
+               <b>usuario anónimo</b>
+            {/if}
+            <span class="num_answers">{$value->num_answers}</span>
+            <span class="date">{$value->updated_timesince()}</span>
+            <div class="resume">{$value->resume()}</div>
+         </a>
+      </div>
+      {/loop}
+   </div>
+</div>
+{/if}
+
+{if condition="$kec->unreaded"}
+<div class="rounded">
+   <h1>
+      Pendientes:
+      <span>
+         <a class="link" href="{$kec->get_path()}/question_list">ver todas las preguntas</a>
+      </span>
+   </h1>
+   <div class="questions">
+      {loop="$kec->unreaded"}
+      <div class="question_box">
+         <div class="reward">{$value->reward}</div>
+         <a class="question" href="{$value->url()}">
+            <span class="tag">{$value->get_status()}</span>
+            {if condition="$value->user"}
+               <span class="nick">{$value->user->nick}</span>
+            {else}
+               <b>usuario anónimo</b>
+            {/if}
+            <span class="num_answers">{$value->num_answers}</span>
+            <span class="date">{$value->updated_timesince()}</span>
+            <div class="resume">{$value->resume()}</div>
+         </a>
+      </div>
+      {/loop}
+   </div>
+</div>
+{else}
+<div class="message">¡Enhorabuena! No tienes preguntas por leer ¿Te atreves con estas?</div>
+
+<div class="rounded">
+   <h1>
+      Sin solución:
+      <span>
+         <a class="link" href="{$kec->get_path()}/question_list">ver todas las preguntas</a>
+      </span>
+   </h1>
+   <div class="questions">
+      {loop="$kec->question->all_unreaded()"}
+      <div class="question_box">
+         <div class="reward">{$value->reward}</div>
+         <a class="question" href="{$value->url()}">
+            <span class="tag">{$value->get_status()}</span>
+            {if condition="$value->user"}
+               <span class="nick">{$value->user->nick}</span>
+            {else}
+               <b>usuario anónimo</b>
+            {/if}
+            <span class="num_answers">{$value->num_answers}</span>
+            <span class="date">{$value->updated_timesince()}</span>
+            <div class="resume">{$value->resume()}</div>
+         </a>
+      </div>
+      {/loop}
+   </div>
+</div>
+{/if}
+
+{include="footer"}

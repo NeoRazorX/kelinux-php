@@ -1,0 +1,50 @@
+{include="header"}
+
+{if condition="$kec->user"}
+<div class="rounded">
+   <h1>
+      Notificaciones:
+      <span><a class="link" href="{$kec->user->url()}">ver tu perfil</a></span>
+   </h1>
+   {loop="$kec->user->get_notifications()"}
+   <div class="answers">
+      {if condition="$counter%2+1==1"}
+      <div class="answer_box">
+      {else}
+      <div class="answer_box2">
+      {/if}
+         <div class="answer">
+            <a href="{$value->link}" target="_Blank">Ver enlace</a>
+            <span class="date">{$value->timesince()}</span>
+            <div class="long_text">{$value->text}</div>
+         </div>
+      </div>
+   </div>
+   {/loop}
+</div>
+{else}
+<form action="{$kec->url()}" method="post">
+   <div class="rounded">
+      <h1>
+         ¿Tienes una cuenta?
+         <span><input type="submit" value="entrar"/></span>
+      </h1>
+      Email: <input type="text" name="l_email" maxlength="50"/>
+      Contraseña: <input type="password" name="l_password" size="10" maxlength="10"/>
+   </div>
+</form>
+
+<form action="{$kec->url()}" method="post">
+   <div class="rounded">
+      <h1>
+         ¿NO tienes una cuenta?
+         <span><input type="submit" value="registrarse"/></span>
+      </h1>
+      Nick: <input type="text" name="n_nick" size="16" maxlength="16"/>
+      Email: <input type="text" name="n_email" maxlength="50"/>
+      Contraseña: <input type="password" name="n_password" size="10" maxlength="10"/>
+   </div>
+</form>
+{/if}
+
+{include="footer"}

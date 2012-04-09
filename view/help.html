@@ -1,0 +1,149 @@
+{include="header"}
+
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#b_preview_bbcode").click(function(event) {
+         event.preventDefault();
+         $("#shadow_box").show();
+         $('#popup_bbcode').show();
+         $('#popup_bbcode').css({
+            left: ($(window).width() - $('#popup_bbcode').outerWidth())/2,
+            top: ($(window).height() - $('#popup_bbcode').outerHeight())/2
+         });
+         document.f_preview_bbcode.bbcode.select();
+      });
+      $("#b_send_preview_bbcode").click(function(event) {
+         event.preventDefault();
+         $.ajax({
+            type: 'POST',
+            url: '{$kec->url()}',
+            dataType: 'html',
+            data: 'bbcode='+document.f_preview_bbcode.bbcode.value,
+            success: function(datos) {
+               $("#preview_bbcode").html(datos);
+               document.f_preview_bbcode.bbcode.select();
+            }
+         });
+      });
+   });
+</script>
+
+<div class="rounded">
+   <h1>¿Qué es kelinux?</h1>
+   Kelinux.net es una red solical que tiene como misión solucionar todos los problemas que puedas tener con Linux,
+   con cualquier distribución: Ubuntu, Linux Mint, Debian, Fedora, OpenSuSE ... y sin importar cuanto sepas de informática!
+</div>
+
+<div class="rounded">
+   <h1>¿Qué son y para qué sirven los puntos?</h1>
+   Los puntos son necesarios para votar las respuestas, y sobre todo, para añadirlos a la recompensa de cada pregunta.
+   Las preguntas con una recompensa más alta son más visibles, y el usuario que las resuelve obtiene esa recompensa en puntos.
+</div>
+
+<div class="rounded">
+   <h1>¿Cómo puedo ganar puntos?</h1>
+   <ul>
+      <li>Cuando alguien vota positivamente una de tus respuestas, se te suma un punto.</li>
+      <li>Si la respuesta que has dado es la solución a la pregunta, obtienes la recompensa de la pregunta en puntos.</li>
+      <li>Leer preguntas de otros suma puntos.</li>
+      <li>Participar en el chat también suma puntos.</li>
+   </ul>
+</div>
+
+<div class="rounded">
+   <a name="bbcode"></a>
+   <h1>
+      ¿Qué es el BBcode?
+      <span>
+         <a id="b_preview_bbcode" class="button" href="#">¿Quieres probar?</a>
+      </span>
+   </h1>
+   El BBcode lo componen una serie de etiquetas muy sencillas con las que podrás modificar el estilo del texto o incluir enlaces,
+   imágenes o vídeos. Las etiquetas son las siguientes:
+   <br/><br/>
+   <table width="100%">
+      <tr>
+         <th>Etiqueta:</th>
+         <th>Ejemplo:</th>
+         <th>Resultado:</th>
+         <th>Notas:</th>
+      </tr>
+      <tr>
+         <td align="center">[b]</td>
+         <td align="center">[b]tu texto[/b]</td>
+         <td align="center"><b>tu texto</b></td>
+         <td align="center">Pone el texto en negrita.</td>
+      </tr>
+      <tr>
+         <td align="center">[i]</td>
+         <td align="center">[i]tu texto[/i]</td>
+         <td align="center"><i>tu texto</i></td>
+         <td align="center">Pone el texto en cursiva</td>
+      </tr>
+      <tr>
+         <td align="center">[u]</td>
+         <td align="center">[u]tu texto[/u]</td>
+         <td align="center"><u>tu texto</u></td>
+         <td align="center">Subraya el texto.</td>
+      </tr>
+      <tr>
+         <td align="center">[big]</td>
+         <td align="center">[big]tu texto[/big]</td>
+         <td align="center"><big>tu texto</big></td>
+         <td align="center">Escribe el texto el letras grandes. No abuses.</td>
+      </tr>
+      <tr>
+         <td align="center">[small]</td>
+         <td align="center">[small]tu texto[/small]</td>
+         <td align="center"><small>tu texto</small></td>
+         <td align="center">Escribe el texto en letras pequeñas.</td>
+      </tr>
+      <tr>
+         <td align="center">[code]</td>
+         <td align="center">[code]tu texto[/code]</td>
+         <td align="center"><code>tu texto</code></td>
+         <td align="center">Perfecto para escribir código dentro.</td>
+      </tr>
+      <tr>
+         <td align="center">[url]</td>
+         <td align="center">[url]http://www.google.com[/url]</td>
+         <td align="center"><a href="http://www.google.com" target="_Blank">http://www.google.com</a></td>
+         <td align="center">Para los enlaces.</td>
+      </tr>
+      <tr>
+         <td align="center">[img]</td>
+         <td align="center">[img]http://i.imgur.com/MVjDK.gif[/img]</td>
+         <td align="center"><img src="http://i.imgur.com/MVjDK.gif"/></td>
+         <td align="center">No pongas imágenes de tamaño gigante que me cabreo.</td>
+      </tr>
+      <tr>
+         <td align="center">[youtube]</td>
+         <td align="center">[youtube]6GA0FitJRq0[/youtube]</td>
+         <td align="center">
+            <div>
+               <iframe width="420" height="345" src="http://www.youtube.com/embed/6GA0FitJRq0" frameborder="0" allowfullscreen></iframe>
+            </div>
+         </td>
+         <td align="center">
+            ¿De dónde sale ese 6GA0FitJRq0? Pues de la dirección del vídeo en youtube:
+            <br/>
+            http://www.youtube.com/watch?v=<b>6GA0FitJRq0</b>
+         </td>
+      </tr>
+   </table>
+</div>
+
+<form name="f_preview_bbcode" action="{$kec->url()}" method="post">
+   <div id="popup_bbcode" class="popup">
+      <h1>
+         Probar BBcode:
+         <span>
+            <input id="b_send_preview_bbcode" type="submit" value="probar"/>
+         </span>
+      </h1>
+      <textarea name="bbcode" cols="90" rows="10"></textarea>
+      <div id="preview_bbcode" class="preview"></div>
+   </div>
+</form>
+
+{include="footer"}

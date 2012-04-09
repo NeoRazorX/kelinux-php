@@ -1,0 +1,45 @@
+{include="header"}
+
+<div class="rounded">
+   <h1>
+      Preguntas:
+      <span class="num_answers">{$kec->question->total()}</span>
+   </h1>
+   Número de preguntas por estado:
+   <ul>
+   {loop="$kec->question->status_stats()"}
+      {if condition="$value>0"}
+      <li>{$kec->question->get_status($counter)}: {$value}</li>
+      {/if}
+   {/loop}
+   </ul>
+   Cada pregunta tiene una recompensa media de {$kec->question->avg_reward()} puntos.
+</div>
+
+<div class="rounded">
+   <h1>
+      Respuestas:
+      <span class="num_answers">{$kec->answer->total()}</span>
+   </h1>
+   Cada respuesta tiene una valoración media de {$kec->answer->avg_grade()} puntos.
+</div>
+
+<div class="rounded">
+   <h1>
+      Comunidades:
+      <span class="num_answers">{$kec->community->total()}</span>
+   </h1>
+   Cada comunidad tiene una media de {$kec->community->avg_users()} usuarios.
+</div>
+
+{if condition="$kec->user"}
+<div class="rounded">
+   <h1>
+      Usuarios:
+      <span class="num_answers">{$kec->user->total()}</span>
+   </h1>
+   Cada usuario tiene una media de {$kec->user->avg_points()} puntos.
+</div>
+{/if}
+
+{include="footer"}

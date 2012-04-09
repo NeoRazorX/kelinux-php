@@ -1,0 +1,143 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
+<head>
+   <title>{$kec->get_app_name()}/{$kec->title}</title>
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta name="keywords" content="{$kec->get_tags()}" />
+   <meta name="description" content="{$kec->get_description()}" />
+   <meta name="Robots" content="all" />
+   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+   <link href="{$kec->get_path()}/view/img/favicon.ico" rel="icon" type="image/x-icon" />
+   <link href="{$kec->get_path()}/view/css/core.css" rel="stylesheet" type="text/css" />
+   <script type="text/javascript" src="{$kec->get_path()}/view/js/jquery.js"></script>
+   <script type="text/javascript">
+      $(document).ready(function() {
+         $("#b_crear").click(function(event) {
+            event.preventDefault();
+            $("#shadow_box").show();
+            $('#popup_create').show();
+            $('#popup_create').css({
+               left: ($(window).width() - $('#popup_create').outerWidth())/2,
+               top: ($(window).height() - $('#popup_create').outerHeight())/2
+            });
+            document.f_crear_pregunta.pregunta.select();
+         });
+         $("#b_chat, #b_chat2").click(function(event) {
+            event.preventDefault();
+            $("#iframe_chat").attr('src', '{$kec->get_path()}/chat_room');
+            $("#shadow_box").show();
+            $('#popup_chat').show();
+            $('#popup_chat').css({
+               left: ($(window).width() - $('#popup_chat').outerWidth())/2,
+               top: ($(window).height() - $('#popup_chat').outerHeight())/2
+            });
+         });
+         $("#shadow_box").click(function(event) {
+            $("div.popup").hide();
+            $("#iframe_chat").attr('src', '');
+            $(this).hide();
+         });
+      });
+   </script>
+   {if condition="$kec->get_analytics_id()!=''"}
+   <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', '{$kec->get_analytics_id()}']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+         var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+   </script>
+   {/if}
+</head>
+<body>
+<table class="top_menu">
+   <tr>
+      <td><a id="logo" href="{$kec->get_path()}/" title="ir a la portada">{$kec->get_app_name()}</a></td>
+      <td align="center">{$kec->num_solved_questions()} problemas solucionados</td>
+      <td colspan="2" align="right">
+         <form action="{$kec->get_path()}/finder" method="POST">
+            <input type="text" name="query" value="{$kec->query}"/>
+            <input type="submit" value="buscar"/>
+         </form>
+      </td>
+   </tr>
+   <tr class="menu">
+      <td>
+         <a id="b_crear" href="#" title="crear una pregunta">Crear</a>
+         <a id="b_chat" href="#" title="entrar en el chat">Chat</a>
+         {if condition="$kec->chat->num_unreaded_comments()>0"}
+         <a id="b_chat2" class="number" href="#" title="comentarios nuevos en el chat">{$kec->chat->num_unreaded_comments()}</a>
+         {/if}
+      </td>
+      <td align="center">
+      {if condition="$kec->name=='community_list'"}
+         <a class="selected" href="{$kec->get_path()}/community_list">Comunidades</a>
+      {else}
+         <a href="{$kec->get_path()}/community_list">Comunidades</a>
+      {/if}
+      {if condition="$kec->name=='question_list'"}
+         <a class="selected" href="{$kec->get_path()}/question_list">Preguntas</a>
+      {else}
+         <a href="{$kec->get_path()}/question_list">Preguntas</a>
+      {/if}
+      {if condition="$kec->name=='user_list'"}
+         <a class="selected" href="{$kec->get_path()}/user_list">Usuarios</a>
+      {else}
+         <a href="{$kec->get_path()}/user_list">Usuarios</a>
+      {/if}
+      {if condition="$kec->name=='stats'"}
+         <a class="selected" href="{$kec->get_path()}/stats">Estadísticas</a>
+      {else}
+         <a href="{$kec->get_path()}/stats">Estadísticas</a>
+      {/if}
+      {if condition="$kec->name=='help'"}
+         <a class="selected" href="{$kec->get_path()}/help">Ayuda</a>
+      {else}
+         <a href="{$kec->get_path()}/help">Ayuda</a>
+      {/if}
+      {if condition="$kec->user"}
+         {if condition="$kec->user->is_admin()"}
+            {if condition="$kec->name=='admin'"}
+            <a class="selected" href="{$kec->get_path()}/admin">Administración</a>
+            {else}
+            <a href="{$kec->get_path()}/admin">Administración</a>
+            {/if}
+         {/if}
+      {/if}
+      </td>
+      {if condition="$kec->user"}
+      <td align="right">
+         {if condition="$kec->user->num_unreaded_notifications()>0"}
+            <a class="number" href="{$kec->get_path()}/log_in" title="tus notificaciones">
+               {$kec->user->num_unreaded_notifications()}
+            </a>
+         {/if}
+         {if condition="$kec->name=='log_in'"}
+            <a class="selected" href="{$kec->get_path()}/log_in">{$kec->user->nick}</a>
+         {else}
+            <a href="{$kec->get_path()}/log_in">{$kec->user->nick}</a>
+         {/if}
+         <a id="current_user_points" class="number" href="{$kec->get_path()}/log_in" title="tus puntos">{$kec->user->points}</a>
+      </td>
+      <td align="center">
+         <a id="b_close_sesion" href="{$kec->get_path()}?logout=TRUE">
+            <img src="{$kec->get_path()}/view/img/logout.png" alt="salir" title="cerrar sesión"/>
+         </a>
+      </td>
+      {else}
+      <td align="right">
+         {if condition="$kec->name=='log_in'"}
+            <a class="selected" href="{$kec->get_path()}/log_in">iniciar sesión</a>
+         {else}
+            <a href="{$kec->get_path()}/log_in">iniciar sesión</a>
+         {/if}
+      </td>
+      {/if}
+   </tr>
+</table>
+<div class="main_div">
+{if condition="$kec->messages"}<div class="message">{$kec->messages}</div>{/if}
+{if condition="$kec->errors"}<div class="error">{$kec->errors}</div>{/if}

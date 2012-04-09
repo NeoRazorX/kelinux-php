@@ -1,0 +1,54 @@
+{include="header"}
+
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#b_new_community").click(function(event) {
+         event.preventDefault();
+         $("#shadow_box").show();
+         $('#popup_new_community').show();
+         $('#popup_new_community').css({
+            left: ($(window).width() - $('#popup_new_community').outerWidth())/2,
+            top: ($(window).height() - $('#popup_new_community').outerHeight())/2
+         });
+         document.f_new_community.cname.focus();
+      });
+   });
+</script>
+
+<div class="rounded">
+   <h1>
+      Comunidades:
+      <span>
+         <a id="b_new_community" href="{$kec->url()}">nueva comunidad</a>
+      </span>
+   </h1>
+   <ul class="horizontal">
+      {loop="$kec->community->all()"}
+      <li><a href="{$value->url()}">{$value->name}</a> ({$value->num_users})</li>
+      {/loop}
+   </ul>
+</div>
+
+<form name="f_new_community" action="{$kec->url()}" method="post">
+   <div id="popup_new_community" class="popup">
+      <h1>
+         Nueva comunidad:
+         <span>
+            <input type="submit" value="guardar"/>
+         </span>
+      </h1>
+      <div>
+         Nombre:
+         <br/>
+         <input type="text" name="cname" size="20" maxlength="20"/>
+      </div>
+      <br/>
+      <div>
+         Descripción:
+         <br/>
+         <input type="text" name="cdesc" size="90" maxlength="200"/>
+      </div>
+   </div>
+</form>
+
+{include="footer"}
