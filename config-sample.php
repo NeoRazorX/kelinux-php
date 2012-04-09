@@ -1,7 +1,7 @@
 <?php
 
 define('KE_NAME', '');
-define('KE_PATH', '');
+define('KE_PATH', '/');
 define('KE_ITEM_LIMIT', 30);
 define('KE_ADMIN_NICK', '');
 

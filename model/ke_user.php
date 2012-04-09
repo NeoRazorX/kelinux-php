@@ -59,7 +59,7 @@ class ke_user extends ke_model
 
    public function url()
    {
-      return KE_PATH.'/user/'.$this->nick;
+      return KE_PATH.'user/'.$this->nick;
    }
    
    public function get_questions($offset=0, $limit=KE_ITEM_LIMIT)

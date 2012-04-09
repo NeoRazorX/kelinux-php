@@ -179,7 +179,7 @@ class ke_question extends ke_model
    
    public function url()
    {
-      return KE_PATH."/question/".$this->id;
+      return KE_PATH."question/".$this->id;
    }
    
    public function is_readed()

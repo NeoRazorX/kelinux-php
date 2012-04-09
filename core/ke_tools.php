@@ -92,7 +92,7 @@ class ke_tools
     */
    public function nohtml($t)
    {
-      return htmlentities($t);
+      return htmlspecialchars($t);
    }
 }
 

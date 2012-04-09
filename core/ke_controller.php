@@ -196,7 +196,7 @@ class ke_controller
    
    public function url()
    {
-      return KE_PATH.'/'.$this->name;
+      return KE_PATH.$this->name;
    }
    
    public function get_tags()

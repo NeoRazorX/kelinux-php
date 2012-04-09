@@ -43,7 +43,7 @@ class user extends ke_controller
       if($this->suser)
          return $this->suser->url();
       else
-         return KE_PATH.'/user_list';
+         return KE_PATH.'user_list';
    }
 
    public function anterior_url()

@@ -44,7 +44,7 @@ class community extends ke_controller
       if($this->scommunity)
          return $this->scommunity->url();
       else
-         return KE_PATH.'/community_list';
+         return KE_PATH.'community_list';
    }
    
    public function get_description()

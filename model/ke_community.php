@@ -192,7 +192,7 @@ class ke_community extends ke_model
 
    public function url()
    {
-      return KE_PATH.'/community/'.$this->name;
+      return KE_PATH.'community/'.$this->name;
    }
    
    public function set_name($name)

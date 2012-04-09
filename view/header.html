@@ -7,9 +7,9 @@
    <meta name="description" content="{$kec->get_description()}" />
    <meta name="Robots" content="all" />
    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-   <link href="{$kec->get_path()}/view/img/favicon.ico" rel="icon" type="image/x-icon" />
-   <link href="{$kec->get_path()}/view/css/core.css" rel="stylesheet" type="text/css" />
-   <script type="text/javascript" src="{$kec->get_path()}/view/js/jquery.js"></script>
+   <link href="{$kec->get_path()}view/img/favicon.ico" rel="icon" type="image/x-icon" />
+   <link href="{$kec->get_path()}view/css/core.css" rel="stylesheet" type="text/css" />
+   <script type="text/javascript" src="{$kec->get_path()}view/js/jquery.js"></script>
    <script type="text/javascript">
       $(document).ready(function() {
          $("#b_crear").click(function(event) {
@@ -55,10 +55,10 @@
 <body>
 <table class="top_menu">
    <tr>
-      <td><a id="logo" href="{$kec->get_path()}/" title="ir a la portada">{$kec->get_app_name()}</a></td>
+      <td><a id="logo" href="{$kec->get_path()}" title="ir a la portada">{$kec->get_app_name()}</a></td>
       <td align="center">{$kec->num_solved_questions()} problemas solucionados</td>
       <td colspan="2" align="right">
-         <form action="{$kec->get_path()}/finder" method="POST">
+         <form action="{$kec->get_path()}finder" method="POST">
             <input type="text" name="query" value="{$kec->query}"/>
             <input type="submit" value="buscar"/>
          </form>
@@ -74,36 +74,36 @@
       </td>
       <td align="center">
       {if condition="$kec->name=='community_list'"}
-         <a class="selected" href="{$kec->get_path()}/community_list">Comunidades</a>
+         <a class="selected" href="{$kec->get_path()}community_list">Comunidades</a>
       {else}
-         <a href="{$kec->get_path()}/community_list">Comunidades</a>
+         <a href="{$kec->get_path()}community_list">Comunidades</a>
       {/if}
       {if condition="$kec->name=='question_list'"}
-         <a class="selected" href="{$kec->get_path()}/question_list">Preguntas</a>
+         <a class="selected" href="{$kec->get_path()}question_list">Preguntas</a>
       {else}
-         <a href="{$kec->get_path()}/question_list">Preguntas</a>
+         <a href="{$kec->get_path()}question_list">Preguntas</a>
       {/if}
       {if condition="$kec->name=='user_list'"}
-         <a class="selected" href="{$kec->get_path()}/user_list">Usuarios</a>
+         <a class="selected" href="{$kec->get_path()}user_list">Usuarios</a>
       {else}
-         <a href="{$kec->get_path()}/user_list">Usuarios</a>
+         <a href="{$kec->get_path()}user_list">Usuarios</a>
       {/if}
       {if condition="$kec->name=='stats'"}
-         <a class="selected" href="{$kec->get_path()}/stats">Estadísticas</a>
+         <a class="selected" href="{$kec->get_path()}stats">Estadísticas</a>
       {else}
-         <a href="{$kec->get_path()}/stats">Estadísticas</a>
+         <a href="{$kec->get_path()}stats">Estadísticas</a>
       {/if}
       {if condition="$kec->name=='help'"}
-         <a class="selected" href="{$kec->get_path()}/help">Ayuda</a>
+         <a class="selected" href="{$kec->get_path()}help">Ayuda</a>
       {else}
-         <a href="{$kec->get_path()}/help">Ayuda</a>
+         <a href="{$kec->get_path()}help">Ayuda</a>
       {/if}
       {if condition="$kec->user"}
          {if condition="$kec->user->is_admin()"}
             {if condition="$kec->name=='admin'"}
-            <a class="selected" href="{$kec->get_path()}/admin">Administración</a>
+            <a class="selected" href="{$kec->get_path()}admin">Administración</a>
             {else}
-            <a href="{$kec->get_path()}/admin">Administración</a>
+            <a href="{$kec->get_path()}admin">Administración</a>
             {/if}
          {/if}
       {/if}
@@ -111,28 +111,28 @@
       {if condition="$kec->user"}
       <td align="right">
          {if condition="$kec->user->num_unreaded_notifications()>0"}
-            <a class="number" href="{$kec->get_path()}/log_in" title="tus notificaciones">
+            <a class="number" href="{$kec->get_path()}log_in" title="tus notificaciones">
                {$kec->user->num_unreaded_notifications()}
             </a>
          {/if}
          {if condition="$kec->name=='log_in'"}
-            <a class="selected" href="{$kec->get_path()}/log_in">{$kec->user->nick}</a>
+            <a class="selected" href="{$kec->get_path()}log_in">{$kec->user->nick}</a>
          {else}
-            <a href="{$kec->get_path()}/log_in">{$kec->user->nick}</a>
+            <a href="{$kec->get_path()}log_in">{$kec->user->nick}</a>
          {/if}
-         <a id="current_user_points" class="number" href="{$kec->get_path()}/log_in" title="tus puntos">{$kec->user->points}</a>
+         <a id="current_user_points" class="number" href="{$kec->get_path()}log_in" title="tus puntos">{$kec->user->points}</a>
       </td>
       <td align="center">
          <a id="b_close_sesion" href="{$kec->get_path()}?logout=TRUE">
-            <img src="{$kec->get_path()}/view/img/logout.png" alt="salir" title="cerrar sesión"/>
+            <img src="{$kec->get_path()}view/img/logout.png" alt="salir" title="cerrar sesión"/>
          </a>
       </td>
       {else}
       <td align="right">
          {if condition="$kec->name=='log_in'"}
-            <a class="selected" href="{$kec->get_path()}/log_in">iniciar sesión</a>
+            <a class="selected" href="{$kec->get_path()}log_in">iniciar sesión</a>
          {else}
-            <a href="{$kec->get_path()}/log_in">iniciar sesión</a>
+            <a href="{$kec->get_path()}log_in">iniciar sesión</a>
          {/if}
       </td>
       {/if}

@@ -171,7 +171,7 @@ class question extends ke_controller
       if($this->question)
          return $this->question->url();
       else
-         return KE_PATH.'/question_list';
+         return KE_PATH.'question_list';
    }
    
    public function get_description()

@@ -53,7 +53,7 @@ class ke_answer extends ke_model
    
    public function url()
    {
-      return KE_PATH.'/question/'.$this->question_id.'#'.$this->id;
+      return KE_PATH.'question/'.$this->question_id.'#'.$this->id;
    }
    
    public function set_text($t)
