@@ -1,4 +1,21 @@
 <?php
+/*
+ * This file is part of Kelinux-php.
+ * Copyright (C) 2012  Carlos Garcia Gomez  neorazorx@gmail.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 require_once 'model/ke_question.php';
 require_once 'model/ke_answer.php';
@@ -66,10 +83,24 @@ class question extends ke_controller
                         if( $this->user->add_points(-1) )
                            echo "OK;".$this->question->reward.";".$this->user->points;
                         else
+                        {
                            echo "¡Error al descontarte los puntos!";
+                           if( $this->is_db_history_enabled() )
+                           {
+                              foreach($this->db_history() as $h)
+                                 echo "\n".$h;
+                           }
+                        }
                      }
                      else
+                     {
                         echo "¡Error al modificar la pregunta!";
+                        if( $this->is_db_history_enabled() )
+                        {
+                           foreach($this->db_history() as $h)
+                              echo "\n".$h;
+                        }
+                     }
                   }
                   else
                      echo "No tienes suficientes puntos.";
@@ -96,13 +127,34 @@ class question extends ke_controller
                            if( $this->user->add_points(-1) ) /// votar cuesta 1 punto
                               echo "OK;".$answer->id.";".$answer->grade.";".$this->user->points;
                            else
+                           {
                               echo "¡Error al descontarte los puntos!";
+                              if( $this->is_db_history_enabled() )
+                              {
+                                 foreach($this->db_history() as $h)
+                                    echo "\n".$h;
+                              }
+                           }
                         }
                         else
+                        {
                            echo "¡Error al modificar la respuesta!";
+                           if( $this->is_db_history_enabled() )
+                           {
+                              foreach($this->db_history() as $h)
+                                 echo "\n".$h;
+                           }
+                        }
                      }
                      else
+                     {
                         echo "¡Respuesta no encontrada!";
+                        if( $this->is_db_history_enabled() )
+                        {
+                           foreach($this->db_history() as $h)
+                              echo "\n".$h;
+                        }
+                     }
                   }
                   else
                      echo "No tienes suficientes puntos.";
@@ -139,13 +191,34 @@ class question extends ke_controller
                            if( $this->question->set_solved() )
                               echo "OK";
                            else
+                           {
                               echo "¡Error al marcar la pregunta como solucionada!";
+                              if( $this->is_db_history_enabled() )
+                              {
+                                 foreach($this->db_history() as $h)
+                                    echo "\n".$h;
+                              }
+                           }
                         }
                         else
+                        {
                            echo "¡Error al marcar la respuesta!";
+                           if( $this->is_db_history_enabled() )
+                           {
+                              foreach($this->db_history() as $h)
+                                 echo "\n".$h;
+                           }
+                        }
                      }
                      else
+                     {
                         echo "¡Respuesta no encontrada!";
+                        if( $this->is_db_history_enabled() )
+                        {
+                           foreach($this->db_history() as $h)
+                              echo "\n".$h;
+                        }
+                     }
                   }
                   else
                      echo "No tienes permiso para hacer esto.";

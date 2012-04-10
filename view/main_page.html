@@ -65,7 +65,7 @@
       </span>
    </h1>
    <div class="questions">
-      {loop="$kec->question->all_unreaded()"}
+      {loop="$kec->question->all_unsolved()"}
       <div class="question_box">
          <div class="reward">{$value->reward}</div>
          <a class="question" href="{$value->url()}">

@@ -130,7 +130,7 @@
          {if condition="$kec->user"}
             {if condition="$kec->user->is_admin()"}
             <div class="option_buttons">
-               <a href="#" onclick="mark_solution('{$value->id}')">esta es la solución</a>
+               <a href="#{$value->num}" onclick="mark_solution('{$value->id}')">esta es la solución</a>
                <a href="{$kec->url()}">editar</a>
                <a href="{$kec->url()}">borrar</a>
             </div>

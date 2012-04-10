@@ -1,4 +1,21 @@
 <?php
+/*
+ * This file is part of Kelinux-php.
+ * Copyright (C) 2012  Carlos Garcia Gomez  neorazorx@gmail.com
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ * 
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 
 class ke_tools
 {
@@ -17,7 +34,7 @@ class ke_tools
       else if( preg_match('/^([0-9]{1,2})-([0-9]{1,2})-([0-9]{4}) ([0-9]{1,2}):([0-9]{1,2}):([0-9]{1,2})$/i', $v) ) /// es una fecha
          return "'".Date('Y-m-d H:i:s', strtotime($v))."'";
       else
-         return "'".$v."'";
+         return "'".addslashes($v)."'";
    }
    
    public function intval($s)
@@ -67,6 +84,7 @@ class ke_tools
           "/\[code\](.*?)\[\/code\]/is",
           "/\[img\](.*?)\[\/img\]/is",
           "/\[url\](.*?)\[\/url\]/is",
+          "/\[url=(.*?)\](.*?)\[\/url\]/is",
           "/\[youtube\](.*?)\[\/youtube\]/is"
       );
       $b = array(
@@ -78,6 +96,7 @@ class ke_tools
           "<code>$1</code>",
           "<img src=\"$1\" />",
           "<a href=\"$1\" target=\"_Blank\">$1</a>",
+          "<a href=\"$1\" target=\"_Blank\">$2</a>",
           "<div><iframe width=\"420\" height=\"345\" src=\"http://www.youtube.com/embed/$1\"".
              "frameborder=\"0\" allowfullscreen></iframe></div>"
       );

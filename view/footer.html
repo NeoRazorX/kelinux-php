@@ -29,9 +29,19 @@
    </ul>
 {/if}
 <div class="footer">
-   Tiempo de ejecución: {$kec->duration()} |
-   Selects: {$kec->db_selects()} |
-   Transactions: {$kec->db_transactions()}
+   <table width="100%">
+      <tr>
+         <td>
+            Tiempo de ejecución: {$kec->duration()} |
+            Selects: {$kec->db_selects()} |
+            Transactions: {$kec->db_transactions()}
+         </td>
+         <td align="right">
+            <a target="_Blank" href="https://github.com/NeoRazorX/kelinux-php">Código fuente</a> |
+            Copyright © 2012 by <a target="_Blank" href="http://www.neorazorx.com/p/cv.html">NeoRazorX</a>
+         </td>
+      </tr>
+   </table>
 </div>
 </body>
 </html>

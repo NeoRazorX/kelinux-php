@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 <head>
    <title>{$kec->get_app_name()}/{$kec->title}</title>
-   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
    <meta name="keywords" content="{$kec->get_tags()}" />
    <meta name="description" content="{$kec->get_description()}" />
    <meta name="Robots" content="all" />
@@ -58,7 +58,7 @@
       <td><a id="logo" href="{$kec->get_path()}" title="ir a la portada">{$kec->get_app_name()}</a></td>
       <td align="center">{$kec->num_solved_questions()} problemas solucionados</td>
       <td colspan="2" align="right">
-         <form action="{$kec->get_path()}finder" method="POST">
+         <form action="{$kec->get_path()}finder" method="post">
             <input type="text" name="query" value="{$kec->query}"/>
             <input type="submit" value="buscar"/>
          </form>
