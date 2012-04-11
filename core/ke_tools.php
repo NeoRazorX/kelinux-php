@@ -100,8 +100,37 @@ class ke_tools
           "<div><iframe width=\"420\" height=\"345\" src=\"http://www.youtube.com/embed/$1\"".
              "frameborder=\"0\" allowfullscreen></iframe></div>"
       );
-      $texto = nl2br( preg_replace($a, $b, $v) );
-      return $texto;
+      return nl2br( preg_replace($a, $b, $v) );
+   }
+   
+   /// dado un texto con bbcode devuelve el mismo texto sin las etiquetas bbcode
+   public function nobbcode($t)
+   {
+      $a = array(
+          "/\[i\](.*?)\[\/i\]/is",
+          "/\[b\](.*?)\[\/b\]/is",
+          "/\[u\](.*?)\[\/u\]/is",
+          "/\[big\](.*?)\[\/big\]/is",
+          "/\[small\](.*?)\[\/small\]/is",
+          "/\[code\](.*?)\[\/code\]/is",
+          "/\[img\](.*?)\[\/img\]/is",
+          "/\[url\](.*?)\[\/url\]/is",
+          "/\[url=(.*?)\](.*?)\[\/url\]/is",
+          "/\[youtube\](.*?)\[\/youtube\]/is"
+      );
+      $b = array(
+          "$1",
+          "$1",
+          "$1",
+          "$1",
+          "$1",
+          "$1",
+          "$1",
+          "$1",
+          "$1 ($2)",
+          "http://www.youtube.com/$1"
+      );
+      return preg_replace($a, $b, $t);
    }
    
    /* 

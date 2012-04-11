@@ -18,6 +18,7 @@
  */
 
 require_once 'core/ke_model.php';
+require_once 'model/ke_user.php';
 
 class ke_notification extends ke_model
 {
@@ -26,8 +27,9 @@ class ke_notification extends ke_model
    public $date;
    public $text;
    public $link;
-   public $sendmail;
+   public $sendmail; /// true -> hay que mandar un email
    public $readed;
+   public $user;
    
    public function __construct($n=FALSE)
    {
@@ -49,7 +51,7 @@ class ke_notification extends ke_model
          $this->date = Date('j-n-Y H:i:s');
          $this->text = '';
          $this->link = '';
-         $this->sendmail = FALSE;
+         $this->sendmail = TRUE;
          $this->readed = FALSE;
       }
    }
@@ -59,11 +61,34 @@ class ke_notification extends ke_model
       return $this->var2timesince($this->date);
    }
    
-   public function set_text($t)
+   public function set_answer($user, $answer)
    {
-      $this->text = $this->nohtml($t);
+      if( $user )
+         $nick = $user->nick;
+      else
+         $nick = 'un usuario anónimo';
+      $this->text = ucfirst($nick)." responde: '".$this->nobbcode($answer)."'.";
    }
    
+   public function set_mention($user, $answer)
+   {
+      if( $user )
+         $nick = $user->nick;
+      else
+         $nick = 'un usuario anónimo';
+      $this->text = ucfirst($nick)." te ha mencionado diciendo: '".$this->nobbcode($answer)."'.";
+   }
+   
+   public function get_user()
+   {
+      if( !isset($this->user) )
+      {
+         $u = new ke_user();
+         $this->user = $u->get($this->user_id);
+      }
+      return $this->user;
+   }
+
    public function get($id)
    {
       if( isset($id) )
@@ -116,9 +141,7 @@ class ke_notification extends ke_model
       if($notis)
       {
          foreach($notis as $n)
-         {
             $nlist[] = new ke_notification($n);
-         }
       }
       return $nlist;
    }
@@ -132,9 +155,21 @@ class ke_notification extends ke_model
       return $num;
    }
    
+   public function all2sendmail()
+   {
+      $nlist = array();
+      $notis = $this->db->select("SELECT * FROM ".$this->table_name." WHERE sendmail = TRUE;");
+      if($notis)
+      {
+         foreach($notis as $n)
+            $nlist[] = new ke_notification($n);
+      }
+      return $nlist;
+   }
+   
    public function mark_as_readed_from_user($uid)
    {
-      return $this->db->exec("UPDATE ".$this->table_name." SET readed = TRUE WHERE user_id = '".$uid."' AND readed = FALSE;");
+      return $this->db->exec("UPDATE ".$this->table_name." SET readed = TRUE, sendmail = FALSE WHERE user_id = '".$uid."' AND readed = FALSE;");
    }
 }
 

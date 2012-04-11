@@ -68,12 +68,20 @@ class ke_answer extends ke_model
       return $this->var2timesince($this->created);
    }
    
+   public function resume()
+   {
+      if(strlen($this->text) > 300)
+         return substr($this->text, 0, 300)."...";
+      else
+         return $this->text;
+   }
+
    public function url($full=FALSE)
    {
       if($full)
-         return 'http://www.'.KE_DOMAIN.KE_PATH.'question/'.$this->question_id.'#'.$this->id;
+         return 'http://www.'.KE_DOMAIN.KE_PATH.'question/'.$this->question_id.'#'.$this->num;
       else
-         return KE_PATH.'question/'.$this->question_id.'#'.$this->id;
+         return KE_PATH.'question/'.$this->question_id.'#'.$this->num;
    }
    
    public function set_text($t)
@@ -85,6 +93,32 @@ class ke_answer extends ke_model
    {
       $this->grade += intval($p);
       return $this->save();
+   }
+   
+   public function get_users_mentioned($exclude=FALSE)
+   {
+      $mentionlist = array();
+      $user = new ke_user();
+      foreach($user->all() as $u)
+      {
+         if(preg_match('/@'.$u->nick.'($|\z|\W)/i', $this->text) AND !in_array($u, $mentionlist) AND $u != $exclude)
+            $mentionlist[] = $u;
+      }
+      return $mentionlist;
+   }
+   
+   public function get_numbers_mentioned()
+   {
+      $numlist = array();
+      $num = ($this->num-1);
+      while($num > 0)
+      {
+         if( preg_match('/@'.$num.'($|\z|\D)/', $this->text) )
+            $numlist[] = $num;
+         
+         $num--;
+      }
+      return $numlist;
    }
    
    public function get($id)

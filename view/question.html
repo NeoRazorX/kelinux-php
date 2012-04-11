@@ -137,7 +137,7 @@
             {else}
                {if condition="$kec->question->user_id==$kec->user"}
                <div class="option_buttons">
-                  <a href="{$kec->url()}">esta es la solución</a>
+                  <a href="#{$value->num}" onclick="mark_solution('{$value->id}')">esta es la solución</a>
                </div>
                {/if}
             {/if}

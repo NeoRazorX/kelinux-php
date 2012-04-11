@@ -1,4 +1,4 @@
-@import url(http://fonts.googleapis.com/css?family=Cabin+Sketch:700);
+@import url(http://fonts.googleapis.com/css?family=Chau+Philomene+One);
 
 body {
    background-color: #333333;
@@ -136,7 +136,6 @@ table.top_menu {
    margin: 0px;
    padding: 0px;
    background-color: #4C769E;
-   color: black;
    font-size: 15px;
 }
 
@@ -167,10 +166,10 @@ table.top_menu tr.menu a:hover {
 
 table.top_menu a#logo {
    padding-left: 5px;
-   font-family: 'Cabin Sketch', cursive;
+   font-family: 'Chau Philomene One', sans-serif;
    font-size: 40px;
    text-decoration: none;
-   color: black;
+   color: white;
 }
 
 table.top_menu input[type='submit'] {

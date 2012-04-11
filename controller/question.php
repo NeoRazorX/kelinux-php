@@ -43,29 +43,13 @@ class question extends ke_controller
             {
                $answer = new ke_answer();
                $answer->question_id = $this->question->id;
+               $answer->num = ($this->question->num_answers+1);
                $answer->set_text($_POST['respuesta']);
                if($this->user)
                   $answer->user_id = $this->user->id;
                
                if( $answer->save() )
-               {
                   $this->new_message("Respuesta guardada correctamente");
-                  
-                  /// ¿generamos una notificación?
-                  if($answer->user_id != $this->question->user_id)
-                  {
-                     $noti = new ke_notification();
-                     $noti->user_id = $this->question->user_id;
-                     $noti->link = $answer->url();
-                     $noti->text = $answer->text;
-                     $noti->save();
-                  }
-                  
-                  /// actualizamos la pregunta
-                  $this->question->get_answers(); /// actualiza el número de respuestas y el estado
-                  if( !$this->question->save() )
-                     $this->new_error("¡Imposible actualizar la pregunta!");
-               }
                else
                   $this->new_error("¡Imposible guardar la respuesta!");
             }

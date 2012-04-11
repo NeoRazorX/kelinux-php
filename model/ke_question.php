@@ -21,6 +21,7 @@ require_once 'core/ke_model.php';
 require_once 'model/ke_user.php';
 require_once 'model/ke_answer.php';
 require_once 'model/ke_community.php';
+require_once 'model/ke_notification.php';
 
 class ke_question extends ke_model
 {
@@ -235,10 +236,66 @@ class ke_question extends ke_model
       $answers = $answer->all_from_question($this->id);
       if( count($answers) != $this->num_answers)
       {
+         /// si han añadido respuestas hay que actualizar y generar notificaciones
+         if( count($answers) > $this->num_answers)
+         {
+            $this->updated = Date('j-n-Y H:i:s');
+            if($this->num_answers > 0 AND $this->status == 0)
+               $this->status = 1;
+            
+            $i = $this->num_answers;
+            while($i < count($answers))
+            {
+               /* ¿Generamos notificaciones por mención directa a usuarios?
+                * Nos guardamos la lista de usuarios mencionados para no enviarles
+                * más de una notificación por respuesta.
+                */
+               $users_mentioned = $answers[$i]->get_users_mentioned($this->user);
+               foreach($users_mentioned as $u)
+               {
+                  $noti = new ke_notification();
+                  $noti->user_id = $u->id;
+                  $noti->link = $answers[$i]->url();
+                  $noti->set_mention($answers[$i]->user, $answers[$i]->text);
+                  $noti->save();
+               }
+               
+               /* Añadimos al creador de la pregunta para no enviarle más de una notificación
+                * por respuesta.
+                */
+               $users_mentioned[] = $this->user;
+               
+               /// ¿generamos notificaiones por mención a otra respuesta? ejemplo: '@2 gracias!'
+               foreach($answers[$i]->get_numbers_mentioned() as $n)
+               {
+                  if($answers[$n-1]->user AND !in_array($answers[$n-1]->user, $users_mentioned))
+                  {
+                     $noti = new ke_notification();
+                     $noti->user_id = $answers[$n-1]->user_id;
+                     $noti->link = $answers[$i]->url();
+                     $noti->set_mention($answers[$i]->user, $answers[$i]->text);
+                     $noti->save();
+                     
+                     $users_mentioned[] = $answers[$n-1]->user;
+                  }
+               }
+               
+               /// ¿generamos una notificación para el autor de la pregunta?
+               if($this->user AND $this->user_id != $answers[$i]->user_id)
+               {
+                  $noti = new ke_notification();
+                  $noti->user_id = $this->user_id;
+                  $noti->link = $answers[$i]->url();
+                  $noti->set_answer($answers[$i]->user, $answers[$i]->text);
+                  $noti->save();
+               }
+               
+               $i++;
+            }
+         }
+         
          $this->num_answers = count($answers);
-         $this->updated = Date('j-n-Y H:i:s');
-         if($this->num_answers > 0 AND $this->status == 0)
-            $this->status = 1;
+         $this->save();
       }
       return $answers;
    }

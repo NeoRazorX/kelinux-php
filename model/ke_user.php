@@ -126,6 +126,7 @@ class ke_user extends ke_model
    
    public function set_nick($n)
    {
+      $n = strtolower($n);
       if( preg_match('/^[a-zA-Z0-9_]{3,16}$/i', $n) )
       {
          if( $this->db->select("SELECT * FROM ".$this->table_name." WHERE nick = '".$n."';") )

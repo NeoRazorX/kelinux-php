@@ -217,6 +217,7 @@ class ke_community extends ke_model
    
    public function set_name($name)
    {
+      $name = strtolower($name); /// convertimos a minúsculas
       if( preg_match('/^[a-zA-Z0-9_]{3,20}$/i', $name) )
       {
          if( $this->db->select("SELECT * FROM ".$this->table_name." WHERE name = '".$name."';") )
