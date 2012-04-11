@@ -157,7 +157,7 @@ class question extends ke_controller
                      $continuar = TRUE;
                   else if($this->question->user)
                   {
-                     if($this->question->user_id == $this->user->user_id)
+                     if($this->question->user_id == $this->user->id)
                         $continuar = TRUE;
                   }
                   
