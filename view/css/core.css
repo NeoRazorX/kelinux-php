@@ -16,7 +16,7 @@ body.chat {
    color: black;
    padding: 0px;
    font-family: Verdana, sans-serif;
-   font-size: 12px;
+   font-size: 13px;
    font-style: normal;
    font-weight: normal;
 }
@@ -208,7 +208,7 @@ div.main_div {
    border-bottom: 1px solid black;
    color: black;
    font-family: Verdana, sans-serif;
-   font-size: 12px;
+   font-size: 13px;
    font-style: normal;
    font-weight: normal;
 }
@@ -490,7 +490,7 @@ big {
 }
 
 small {
-   font-size: 11px;
+   font-size: 10px;
 }
 
 div.preview {

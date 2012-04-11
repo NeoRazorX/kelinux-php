@@ -135,7 +135,7 @@
                <a href="{$kec->url()}">borrar</a>
             </div>
             {else}
-               {if condition="$kec->question->user_id==$kec->user"}
+               {if condition="$kec->question->user_id==$kec->user->id"}
                <div class="option_buttons">
                   <a href="#{$value->num}" onclick="mark_solution('{$value->id}')">esta es la solución</a>
                </div>
