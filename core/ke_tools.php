@@ -72,6 +72,11 @@ class ke_tools
          return 'fecha desconocida';
    }
    
+   public function true_word_break($str, $width=90)
+   {
+      return preg_replace('#(\S{'.$width.',})#e', "chunk_split('$1', ".$width.", '&#8203;')", $str);
+   }
+
    /// función para facilitar la generación del códigos html
    public function var2html($v)
    {
@@ -100,7 +105,7 @@ class ke_tools
           "<div><iframe width=\"420\" height=\"345\" src=\"http://www.youtube.com/embed/$1\"".
              "frameborder=\"0\" allowfullscreen></iframe></div>"
       );
-      return nl2br( preg_replace($a, $b, wordwrap($v, 60, "&#8203;", TRUE) ) );
+      return nl2br( preg_replace($a, $b, $this->true_word_break($v) ) );
    }
    
    /// dado un texto con bbcode devuelve el mismo texto sin las etiquetas bbcode

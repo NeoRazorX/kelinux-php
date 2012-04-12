@@ -74,18 +74,20 @@ class ke_question extends ke_model
    
    public function title()
    {
-      if(strlen($this->text) > 80)
-         return substr($this->text, 0, 80)."...";
+      $aux = $this->nobbcode($this->text);
+      if(strlen($aux) > 80)
+         return substr($aux, 0, 80)."...";
       else
-         return $this->text;
+         return $aux;
    }
    
    public function resume()
    {
-      if(strlen($this->text) > 300)
-         return substr($this->text, 0, 300)."...";
+      $aux = $this->nobbcode($this->text);
+      if(strlen($aux) > 300)
+         return substr($aux, 0, 300)."...";
       else
-         return $this->text;
+         return $aux;
    }
    
    public function text2html()
