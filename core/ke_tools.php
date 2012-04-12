@@ -100,7 +100,7 @@ class ke_tools
           "<div><iframe width=\"420\" height=\"345\" src=\"http://www.youtube.com/embed/$1\"".
              "frameborder=\"0\" allowfullscreen></iframe></div>"
       );
-      return nl2br( preg_replace($a, $b, $v) );
+      return nl2br( preg_replace($a, $b, wordwrap($v, 60, "&#8203;", TRUE) ) );
    }
    
    /// dado un texto con bbcode devuelve el mismo texto sin las etiquetas bbcode

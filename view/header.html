@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="es" lang="es">
 <head>
-   <title>{$kec->get_app_name()}/{$kec->title}</title>
+   <title>{$kec->title}</title>
    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
    <meta name="keywords" content="{$kec->get_tags()}" />
    <meta name="description" content="{$kec->get_description()}" />
@@ -59,7 +59,7 @@
       <td align="center">{$kec->num_solved_questions()} problemas solucionados</td>
       <td colspan="2" align="right">
          <form action="{$kec->get_path()}finder" method="post">
-            <input type="text" name="query" value="{$kec->query}"/>
+            <input type="text" name="query" value="{$kec->query}" size="16"/>
             <input type="submit" value="buscar"/>
          </form>
       </td>
@@ -120,7 +120,7 @@
          {else}
             <a href="{$kec->get_path()}log_in">{$kec->user->nick}</a>
          {/if}
-         <a id="current_user_points" class="number" href="{$kec->get_path()}log_in" title="tus puntos">{$kec->user->points}</a>
+         <a id="current_user_points" class="number" href="{$kec->get_path()}help#puntos" title="tus puntos">{$kec->user->points}</a>
       </td>
       <td align="center">
          <a id="b_close_sesion" href="{$kec->get_path()}?logout=TRUE">

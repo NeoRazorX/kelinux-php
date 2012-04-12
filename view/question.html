@@ -135,7 +135,7 @@
                <a href="{$kec->url()}">borrar</a>
             </div>
             {else}
-               {if condition="$kec->question->user_id==$kec->user->id"}
+               {if condition="!$kec->question->is_solved() AND $kec->question->user_id==$kec->user->id"}
                <div class="option_buttons">
                   <a href="#{$value->num}" onclick="mark_solution('{$value->id}')">esta es la solución</a>
                </div>
@@ -149,7 +149,8 @@
       <form action="{$kec->url()}" method="post">
          <textarea name="respuesta" rows="10" cols="90"></textarea>
          <input type="submit" value="enviar"/>
-         <a class="link" href="{$kec->get_path()}help#bbcode" target="_Blank">BBcode habilitado</a>
+         <a href="{$kec->get_path()}help#bbcode" target="_Blank">BBcode habilitado</a> |
+         <a href="http://www.imgur.com" target="_Blank">Puedes insertar imágenes usando el servicio imgur (pega aquí el BBcode)</a>
       </form>
    </div>
 </div>

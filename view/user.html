@@ -14,7 +14,41 @@
 </div>
 
 <div class="rounded">
-   <h1>Preguntas creadas o contestadas por {$kec->suser->nick}:</h1>
+   <h1>
+      Preguntas creadas o contestadas por {$kec->suser->nick}:
+      <span>
+         Orden:
+         {if condition="$kec->order=='author'"}
+            <a class="selected" href="{$kec->url()}/author">autor</a>
+         {else}
+            <a href="{$kec->url()}/author">autor</a>
+         {/if}
+         |
+         {if condition="$kec->order=='status'"}
+            <a class="selected" href="{$kec->url()}/status">estado</a>
+         {else}
+            <a href="{$kec->url()}/status">estado</a>
+         {/if}
+         |
+         {if condition="$kec->order=='created'"}
+            <a class="selected" href="{$kec->url()}/created">fecha de creación</a>
+         {else}
+            <a href="{$kec->url()}/created">fecha de creación</a>
+         {/if}
+         |
+         {if condition="$kec->order=='updated'"}
+            <a class="selected" href="{$kec->url()}/updated">fecha de modificación</a>
+         {else}
+            <a href="{$kec->url()}/updated">fecha de modificación</a>
+         {/if}
+         |
+         {if condition="$kec->order=='reward'"}
+            <a class="selected" href="{$kec->url()}/reward">recompensa</a>
+         {else}
+            <a href="{$kec->url()}/reward">recompensa</a>
+         {/if}
+      </span>
+   </h1>
    <div class="questions">
       {loop="$kec->resultado"}
       <div class="question_box">

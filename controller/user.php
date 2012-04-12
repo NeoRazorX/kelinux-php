@@ -22,6 +22,7 @@ class user extends ke_controller
    public $suser;
    public $resultado;
    public $offset;
+   public $order;
    
    public function __construct()
    {
@@ -38,12 +39,17 @@ class user extends ke_controller
          {
             $this->title .= $this->suser->nick;
             
+            if( isset($_GET['param2']) )
+               $this->order = $_GET['param2'];
+            else
+               $this->order = 'updated';
+            
             if( isset($_GET['param3']) )
                $this->offset = intval($_GET['param3']);
             else
                $this->offset = 0;
             
-            $this->resultado = $this->suser->get_questions($this->offset);
+            $this->resultado = $this->suser->get_questions($this->offset, KE_ITEM_LIMIT, $this->order);
          }
          else
             $this->new_error("¡Usuario no encontrado!");
@@ -67,7 +73,7 @@ class user extends ke_controller
    {
       $url = '';
       if($this->offset > 0)
-         $url = $this->url()."/created/".($this->offset-KE_ITEM_LIMIT);
+         $url = $this->url().'/'.$this->order.'/'.($this->offset-KE_ITEM_LIMIT);
       return $url;
    }
    
@@ -75,7 +81,7 @@ class user extends ke_controller
    {
       $url = '';
       if(count($this->resultado) == KE_ITEM_LIMIT)
-         $url = $this->url()."/created/".($this->offset+KE_ITEM_LIMIT);
+         $url = $this->url().'/'.$this->order.'/'.($this->offset+KE_ITEM_LIMIT);
       return $url;
    }
 }

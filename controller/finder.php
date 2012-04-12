@@ -26,7 +26,7 @@ class finder extends ke_controller
    
    public function __construct()
    {
-      parent::__construct('finder', 'Buscador');
+      parent::__construct('finder', 'Buscador de '.KE_NAME);
    }
    
    protected function process()

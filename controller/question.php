@@ -37,7 +37,7 @@ class question extends ke_controller
          $this->question = $this->question->get($_GET['param1']);
          if($this->question)
          {
-            $this->title = $this->question->title();
+            $this->title = $this->question->title().' ['.$this->question->get_status().']';
             
             if( isset($_POST['respuesta']) ) /// añadimos una respuesta
             {

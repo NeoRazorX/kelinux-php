@@ -26,7 +26,7 @@ class main_page extends ke_controller
 
    public function __construct()
    {
-      parent::__construct('main_page', 'Portada');
+      parent::__construct('main_page', 'Portada de '.KE_NAME);
    }
    
    protected function process()

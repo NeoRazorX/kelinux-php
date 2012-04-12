@@ -390,10 +390,19 @@ class ke_question extends ke_model
       return $this->db->exec("DELETE FROM ".$this->table_name." WHERE id = '".$this->id."';");
    }
    
-   public function all($offset=0, $limit=KE_ITEM_LIMIT)
+   public function all($offset=0, $limit=KE_ITEM_LIMIT, $order='updated')
    {
       $qlist = array();
-      $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." ORDER BY updated DESC", $offset, $limit);
+      if($order == 'updated')
+         $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." ORDER BY updated DESC", $offset, $limit);
+      else if($order == 'created')
+         $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." ORDER BY created DESC", $offset, $limit);
+      else if($order == 'status')
+         $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." ORDER BY status ASC", $offset, $limit);
+      else if($order == 'reward')
+         $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." ORDER BY reward DESC", $offset, $limit);
+      else
+         $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." ORDER BY updated DESC", $offset, $limit);
       if($questions)
       {
          foreach($questions as $q)
@@ -402,11 +411,27 @@ class ke_question extends ke_model
       return $qlist;
    }
    
-   public function all_from_user($uid, $offset=0, $limit=KE_ITEM_LIMIT)
+   public function all_from_user($uid, $offset=0, $limit=KE_ITEM_LIMIT, $order='updated')
    {
       $qlist = array();
-      $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE user_id = '".$uid."'
-         OR id IN (SELECT question_id FROM answers WHERE user_id = '".$uid."') ORDER BY updated DESC", $offset, $limit);
+      if($order == 'updated')
+         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE user_id = '".$uid."'
+            OR id IN (SELECT question_id FROM answers WHERE user_id = '".$uid."') ORDER BY updated DESC", $offset, $limit);
+      else if($order == 'created')
+         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE user_id = '".$uid."'
+            OR id IN (SELECT question_id FROM answers WHERE user_id = '".$uid."') ORDER BY created DESC", $offset, $limit);
+      else if($order == 'status')
+         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE user_id = '".$uid."'
+            OR id IN (SELECT question_id FROM answers WHERE user_id = '".$uid."') ORDER BY status ASC", $offset, $limit);
+      else if($order == 'reward')
+         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE user_id = '".$uid."'
+            OR id IN (SELECT question_id FROM answers WHERE user_id = '".$uid."') ORDER BY reward DESC", $offset, $limit);
+      else if($order == 'author')
+         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE user_id = '".$uid."'
+            OR id IN (SELECT question_id FROM answers WHERE user_id = '".$uid."') ORDER BY user_id DESC", $offset, $limit);
+      else
+         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE user_id = '".$uid."'
+            OR id IN (SELECT question_id FROM answers WHERE user_id = '".$uid."') ORDER BY updated DESC", $offset, $limit);
       if($questions)
       {
          foreach($questions as $q)
@@ -418,7 +443,7 @@ class ke_question extends ke_model
    public function all_unsolved($offset=0, $limit=KE_ITEM_LIMIT)
    {
       $qlist = array();
-      $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." WHERE status < 10 ORDER BY updated ASC", $offset, $limit);
+      $questions = $this->db->select_limit("SELECT * FROM ".$this->table_name." WHERE status < 10 ORDER BY status ASC", $offset, $limit);
       if($questions)
       {
          foreach($questions as $q)

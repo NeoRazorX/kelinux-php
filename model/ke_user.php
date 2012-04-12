@@ -82,10 +82,10 @@ class ke_user extends ke_model
          return KE_PATH.'user/'.$this->nick;
    }
    
-   public function get_questions($offset=0, $limit=KE_ITEM_LIMIT)
+   public function get_questions($offset=0, $limit=KE_ITEM_LIMIT, $order='updated')
    {
       $question = new ke_question();
-      return $question->all_from_user($this->id, $offset, $limit);
+      return $question->all_from_user($this->id, $offset, $limit, $order);
    }
    
    public function get_notifications()

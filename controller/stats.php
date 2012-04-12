@@ -24,7 +24,7 @@ class stats extends ke_controller
    
    public function __construct()
    {
-      parent::__construct('stats', 'Estadisticas');
+      parent::__construct('stats', 'Estadisticas de '.KE_NAME);
    }
    
    protected function process()

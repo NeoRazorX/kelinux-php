@@ -23,7 +23,7 @@ class user_list extends ke_controller
 
    public function __construct()
    {
-      parent::__construct('user_list', 'Usuarios');
+      parent::__construct('user_list', 'Usuarios de '.KE_NAME);
    }
    
    protected function process()

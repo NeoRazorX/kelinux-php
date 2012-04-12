@@ -21,7 +21,7 @@ class community_list extends ke_controller
 {
    public function __construct()
    {
-      parent::__construct('community_list', 'Comunidades');
+      parent::__construct('community_list', 'Comunidades de '.KE_NAME);
    }
    
    protected function process()

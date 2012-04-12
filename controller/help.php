@@ -25,7 +25,7 @@ class help extends ke_controller
 
    public function __construct()
    {
-      parent::__construct('help', 'Ayuda');
+      parent::__construct('help', 'Ayuda de '.KE_NAME);
    }
    
    protected function process()
