@@ -34,6 +34,7 @@ class ke_question extends ke_model
    public $status;
    public $reward;
    public $user;
+   public $communities;
 
    public function __construct($q=FALSE)
    {
@@ -134,6 +135,20 @@ class ke_question extends ke_model
          return 'antigua';
       else
          return 'estado desconocido';
+   }
+   
+   public function get_status_array()
+   {
+      $statuslist = array();
+      for($i=0; $i<30; $i++)
+      {
+         if( $this->get_status($i) != 'estado desconocido' )
+            $statuslist[] = array(
+                'num' => $i,
+                'text' => $this->get_status($i)
+            );
+      }
+      return $statuslist;
    }
    
    public function set_solved()
@@ -304,16 +319,19 @@ class ke_question extends ke_model
    
    public function get_communities()
    {
-      $comlist = array();
-      $community = new ke_community();
-      $cq = new ke_community_question();
-      foreach($cq->all_from_question($this->id) as $cq2)
+      if( !isset($this->communities) )
       {
-         $comm2 = $community->get($cq2->community_id);
-         if($comm2)
-            $comlist[] = $comm2;
+         $this->communities = array();
+         $community = new ke_community();
+         $cq = new ke_community_question();
+         foreach($cq->all_from_question($this->id) as $cq2)
+         {
+            $comm2 = $community->get($cq2->community_id);
+            if($comm2)
+               $this->communities[] = $comm2;
+         }
       }
-      return $comlist;
+      return $this->communities;
    }
    
    public function search($query='')
@@ -389,6 +407,15 @@ class ke_question extends ke_model
    
    public function delete()
    {
+      /// eliminamos las relaciones con comunidades
+      $cq = new ke_community_question();
+      foreach($cq->all_from_question($this->id) as $cq2)
+         $cq2->delete();
+      /// eliminamos las respuestas
+      $answer = new ke_answer();
+      foreach($answer->all_from_question($this->id) as $a)
+         $a->delete();
+      /// eliminamos la pregunta
       return $this->db->exec("DELETE FROM ".$this->table_name." WHERE id = '".$this->id."';");
    }
    

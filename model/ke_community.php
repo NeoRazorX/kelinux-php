@@ -136,7 +136,7 @@ class ke_community_question extends ke_model
    
    public function delete()
    {
-      return $this->db->esec("DELETE FROM ".$this->table_name." WHERE questions_id = '".$this->question_id."'
+      return $this->db->exec("DELETE FROM ".$this->table_name." WHERE questions_id = '".$this->question_id."'
             AND communities_id = '".$this->community_id."';");
    }
    

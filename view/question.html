@@ -44,6 +44,20 @@
          });
       }
    }
+   function edit_answer(num)
+   {
+      $("#shadow_box").show();
+      $('#popup_edit_answer_'+num).show();
+      $('#popup_edit_answer_'+num).css({
+         left: ($(window).width() - $('#popup_edit_answer_'+num).outerWidth())/2,
+         top: ($(window).height() - $('#popup_edit_answer_'+num).outerHeight())/2
+      });
+   }
+   function delete_answer(num)
+   {
+      if( confirm("¿Realmente deseas eliminar esta respuesta?") )
+         window.location.href = "{$kec->url()}/delete_answer/"+num;
+   }
    $(document).ready(function() {
       $("#add_reward").click(function(event) {
          event.preventDefault();
@@ -64,6 +78,20 @@
             }
          });
       });
+      $("#b_edit_question").click(function(event) {
+         event.preventDefault();
+         $("#shadow_box").show();
+         $('#popup_edit_question').show();
+         $('#popup_edit_question').css({
+            left: ($(window).width() - $('#popup_edit_question').outerWidth())/2,
+            top: ($(window).height() - $('#popup_edit_question').outerHeight())/2
+         });
+      });
+      $("#b_delete_question").click(function(event) {
+         event.preventDefault();
+         if( confirm("¿Realmente deseas eliminar esta pregunta?") )
+            window.location.href = "{$kec->question->url()}/delete";
+      });
    });
 </script>
 
@@ -73,6 +101,9 @@
       <span>
          creada {$kec->question->created_timesince()},
          modificada {$kec->question->updated_timesince()}
+         {if condition="$kec->can_edit"}
+            <a id="b_edit_question" class="button" href="#">editar</a>
+         {/if}
       </span>
    </h1>
    <table width="100%">
@@ -99,6 +130,43 @@
       </tr>
    </table>
 </div>
+
+{if condition="$kec->can_edit"}
+<div class="popup" id="popup_edit_question">
+   <form action="{$kec->url()}" method="post">
+      <h1>
+         Editar la pregunta:
+         <span>
+            {if condition="$kec->user->is_admin()"}
+               <input id="b_delete_question" type="button" value="eliminar"/> &nbsp;
+            {/if}
+            <input type="submit" value="modificar"/>
+         </span>
+      </h1>
+      <input type="hidden" name="edit_question_id" value="{$kec->question->id}"/>
+      <textarea name="edit_question" cols="90" rows="20">{$kec->question->text}</textarea>
+      <b>Comunidades:</b>
+      {loop="$kec->community->all()"}
+         {if condition="in_array($value, $kec->question->communities)"}
+            <input id="edit_ch_comm_{$value->id}" type="checkbox" name="community[]" value="{$value->id}" checked="checked"/>
+         {else}
+            <input id="edit_ch_comm_{$value->id}" type="checkbox" name="community[]" value="{$value->id}"/>
+         {/if}
+         <label for="edit_ch_comm_{$value->id}">{$value->name}</label> &nbsp;
+      {/loop}
+      <b>Estado de la pregunta:</b>
+      <select name="status">
+         {loop="$kec->question->get_status_array()"}
+            {if condition="$value.num==$kec->question->status"}
+               <option value="{$value.num}" selected="selected">{$value.text}</option>
+            {else}
+               <option value="{$value.num}">{$value.text}</option>
+            {/if}
+         {/loop}
+      </select>
+   </form>
+</div>
+{/if}
 
 <div class="rounded">
    <h1>
@@ -131,8 +199,7 @@
             {if condition="$kec->user->is_admin()"}
             <div class="option_buttons">
                <a href="#{$value->num}" onclick="mark_solution('{$value->id}')">esta es la solución</a>
-               <a href="{$kec->url()}">editar</a>
-               <a href="{$kec->url()}">borrar</a>
+               <a href="#" onclick="edit_answer('{$value->id}')">editar</a>
             </div>
             {else}
                {if condition="!$kec->question->is_solved() AND $kec->question->user_id==$kec->user->id"}
@@ -147,13 +214,33 @@
    </div>
    <div>
       <form action="{$kec->url()}" method="post">
-         <textarea name="respuesta" rows="10" cols="90"></textarea>
+         <textarea name="new_answer" rows="10" cols="90"></textarea>
          <input type="submit" value="enviar"/>
          <a href="{$kec->get_path()}help#bbcode" target="_Blank">BBcode habilitado</a> |
          <a href="http://www.imgur.com" target="_Blank">Puedes insertar imágenes usando el servicio imgur (pega aquí el BBcode)</a>
       </form>
    </div>
 </div>
+
+{if condition="$kec->user"}
+   {if condition="$kec->user->is_admin()"}
+      {loop="$kec->question->get_answers()"}
+      <div id="popup_edit_answer_{$value->id}" class="popup">
+         <form action="{$kec->url()}" method="post">
+            <h1>
+               Editar respuesta:
+               <span>
+                  <input type="button" value="eliminar" onclick="delete_answer('{$value->id}')"/> &nbsp;
+                  <input type="submit" value="modificar"/>
+               </span>
+            </h1>
+            <input type="hidden" name="edit_answer_id" value="{$value->id}"/>
+            <textarea name="edit_answer" cols="90" rows="20">{$value->text}</textarea>
+         </form>
+      </div>
+      {/loop}
+   {/if}
+{/if}
 {/if}
 
 {include="footer"}

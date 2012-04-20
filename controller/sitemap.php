@@ -34,6 +34,11 @@ class sitemap extends ke_controller
       header("Content-type: text/xml");
       echo '<?xml version="1.0" encoding="UTF-8"?>';
       echo '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';
+      foreach($this->community->all() as $c)
+      {
+         $fecha = explode(' ', $c->created);
+         echo '<url><loc>',$c->url(TRUE),'</loc><lastmod>',$fecha[0],'</lastmod><changefreq>always</changefreq><priority>0.7</priority></url>';
+      }
       foreach($this->question->all(0, 500) as $q)
       {
          $fecha = explode(' ', $q->updated);
