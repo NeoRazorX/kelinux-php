@@ -48,7 +48,7 @@ class ke_user extends ke_model
          $this->points = $this->intval($u['points']);
          $this->created = $u['created'];
          $this->last_log_in = $u['last_log_in'];
-         $this->no_emails = ($u['no_emails'] == 't');
+         $this->no_emails = ($u['no_emails'] == 1);
       }
       else
       {

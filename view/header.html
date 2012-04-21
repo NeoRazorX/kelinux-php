@@ -26,17 +26,27 @@
             event.preventDefault();
             $("#iframe_chat").attr('src', '{$kec->get_path()}chat_room');
             $("#shadow_box").show();
-            $('#popup_chat').show();
             $('#popup_chat').css({
                left: ($(window).width() - $('#popup_chat').outerWidth())/2,
                top: ($(window).height() - $('#popup_chat').outerHeight())/2
             });
+            $('#popup_chat').show();
          });
          $("#shadow_box").click(function(event) {
             $("div.popup").hide();
             $("#iframe_chat").attr('src', '');
             $(this).hide();
          });
+         if(window.location.hash == '#chat')
+         {
+            $("#iframe_chat").attr('src', '{$kec->get_path()}chat_room');
+            $("#shadow_box").show();
+            $('#popup_chat').css({
+               left: ($(window).width() - $('#popup_chat').outerWidth())/2,
+               top: ($(window).height() - $('#popup_chat').outerHeight())/2
+            });
+            $('#popup_chat').show();
+         }
       });
    </script>
    {if condition="$kec->get_analytics_id()!=''"}
@@ -53,6 +63,7 @@
    {/if}
 </head>
 <body>
+<a name="chat"></a>
 <table class="top_menu">
    <tr>
       <td><a id="logo" href="{$kec->get_path()}" title="ir a la portada">{$kec->get_app_name()}</a></td>

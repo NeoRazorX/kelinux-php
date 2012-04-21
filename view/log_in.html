@@ -2,6 +2,24 @@
 
 {if condition="$kec->user"}
 <div class="rounded">
+   <form action="{$kec->url()}" method="post">
+      <h1>
+         Tus datos:
+         <span><input type="submit" value="modificar"/></span>
+      </h1>
+      <input type="hidden" name="edit_user" value="edit_user"/>
+      Nueva contraseña: <input type="password" name="npassword" size="10" maxlength="10"/>
+      Repite la contraseña: <input type="password" name="npassword2" size="10" maxlength="10"/>
+      {if condition="$kec->user->no_emails"}
+         <input id="ch_user_noemails" type="checkbox" name="noemails" value="TRUE" checked="checked"/>
+      {else}
+         <input id="ch_user_noemails" type="checkbox" name="noemails" value="TRUE"/>
+      {/if}
+      <label for="ch_user_noemails">no recibir emails</label>
+   </form>
+</div>
+
+<div class="rounded">
    <h1>
       Notificaciones:
       <span><a class="link" href="{$kec->user->url()}">ver tu perfil</a></span>
@@ -14,7 +32,7 @@
       <div class="answer_box2">
       {/if}
          <div class="answer">
-            <a href="{$value->link}" target="_Blank">Ver enlace</a>
+            <a href="{$value->link}" target="_blank">Ver enlace</a>
             <span class="date">{$value->timesince()}</span>
             <div class="long_text">{$value->text}</div>
          </div>
@@ -23,16 +41,34 @@
    {/loop}
 </div>
 {else}
-<form action="{$kec->url()}" method="post">
-   <div class="rounded">
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#b_password_forgotten").click(function(event) {
+         event.preventDefault();
+         var email = prompt("¿Cúal es tu email?");
+         if( email != '' )
+         {
+            document.f_forgotten.password_forgotten.value = email;
+            document.f_forgotten.submit();
+         }
+      });
+   });
+</script>
+
+<div class="rounded">
+   <form action="{$kec->url()}" method="post">
       <h1>
          ¿Tienes una cuenta?
          <span><input type="submit" value="entrar"/></span>
       </h1>
       Email: <input type="text" name="l_email" maxlength="50"/>
       Contraseña: <input type="password" name="l_password" size="10" maxlength="10"/>
-   </div>
-</form>
+   </form>
+   <form name="f_forgotten" action="{$kec->url()}" method="post">
+      <a id="b_password_forgotten" href="#">he olvidado mi contraseña</a>
+      <input type="hidden" name="password_forgotten" value=""/>
+   </form>
+</div>
 
 <form action="{$kec->url()}" method="post">
    <div class="rounded">

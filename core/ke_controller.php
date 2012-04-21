@@ -62,6 +62,7 @@ class ke_controller
             $this->logout();
          else
             $this->login();
+         
          $this->process();
       }
       else
@@ -70,14 +71,17 @@ class ke_controller
    
    private function login()
    {
+      $this->user = FALSE;
+      
       if( isset($_POST['l_email']) AND isset($_POST['l_password']) )
       {
-         $this->user = new ke_user();
-         $this->user = $this->user->get_by_email($_POST['l_email']);
-         if($this->user)
+         $suser = new ke_user();
+         $suser = $suser->get_by_email($_POST['l_email']);
+         if($suser)
          {
-            if($this->user->password == sha1($_POST['l_password']))
+            if($suser->password == sha1($_POST['l_password']))
             {
+               $this->user = $suser;
                $this->user->new_log_key();
                if( $this->user->save() )
                {
@@ -95,23 +99,24 @@ class ke_controller
       }
       else if( isset($_COOKIE['user_id']) AND isset($_COOKIE['log_key']) )
       {
-         $this->user = new ke_user();
-         $this->user = $this->user->get($_COOKIE['user_id']);
-         if($this->user)
+         $suser = new ke_user();
+         $suser = $suser->get($_COOKIE['user_id']);
+         if($suser)
          {
-            if($this->user->log_key != $_COOKIE['log_key'])
+            if($suser->log_key == $_COOKIE['log_key'])
             {
-               $this->user = FALSE;
-               setcookie('user_id', $this->user->id, time()-31536000, KE_PATH);
-               setcookie('log_key', $this->user->log_key, time()-31536000, KE_PATH);
+               $this->user = $suser;
+            }
+            else
+            {
+               setcookie('user_id', $suser->id, time()-31536000, KE_PATH);
+               setcookie('log_key', $suser->log_key, time()-31536000, KE_PATH);
                $this->new_error("Cookie inválida, debes volver a inciar sesión.");
             }
          }
          else
             $this->new_error("¿Tienes la cookie de un usuario que no existe?");
       }
-      else
-         $this->user = FALSE;
    }
    
    private function logout()

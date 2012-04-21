@@ -41,8 +41,8 @@ class ke_notification extends ke_model
          $this->date = $n['date'];
          $this->text = $n['text'];
          $this->link = $n['link'];
-         $this->sendmail = ($n['sendmail'] == 't');
-         $this->readed = ($n['readed'] == 't');
+         $this->sendmail = ($n['sendmail'] == 1);
+         $this->readed = ($n['readed'] == 1);
       }
       else
       {
@@ -77,6 +77,15 @@ class ke_notification extends ke_model
       else
          $nick = 'un usuario anónimo';
       $this->text = ucfirst($nick)." te ha mencionado diciendo: '".$this->nobbcode($answer)."'.";
+   }
+   
+   public function set_chat_mention($user, $answer)
+   {
+      if( $user )
+         $nick = $user->nick;
+      else
+         $nick = 'un usuario anónimo';
+      $this->text = ucfirst($nick)." te ha mencionado en el chat diciendo: '".$this->nobbcode($answer)."'.";
    }
    
    public function get_user()

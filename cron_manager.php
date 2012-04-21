@@ -26,7 +26,7 @@ if( $db->connect() )
          $mail->From = KE_GMAIL;
          
          $mail->AddAddress($n->user->email, $n->user->nick);
-         $mail->Subject = 'Notificación de '.KE_NAME;
+         $mail->Subject = $n->user->nick.', tienes una notificación de '.KE_NAME;
          $mail->Body = $n->text."\n\nhttp://www.".KE_DOMAIN.$n->link;
          if( !$mail->Send() )
             echo $mail->ErrorInfo;

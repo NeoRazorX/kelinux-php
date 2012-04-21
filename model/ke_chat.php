@@ -19,6 +19,8 @@
 
 require_once 'core/ke_cache.php';
 require_once 'core/ke_tools.php';
+require_once 'model/ke_user.php';
+require_once 'model/ke_notification.php';
 
 class ke_chat_line extends ke_tools
 {
@@ -55,6 +57,18 @@ class ke_chat_line extends ke_tools
    {
       return $this->var2html($this->text);
    }
+   
+   public function get_users_mentioned($exclude=FALSE)
+   {
+      $mentionlist = array();
+      $user = new ke_user();
+      foreach($user->all() as $u)
+      {
+         if(preg_match('/@'.$u->nick.'($|\z|\W)/i', $this->text) AND !in_array($u, $mentionlist) AND $u != $exclude)
+            $mentionlist[] = $u;
+      }
+      return $mentionlist;
+   }
 }
 
 class ke_chat extends ke_cache
@@ -75,7 +89,19 @@ class ke_chat extends ke_cache
    
    public function new_comment($user, $text)
    {
-      $this->history[] = new ke_chat_line($user, $text);
+      $comment = new ke_chat_line($user, $text);
+      
+      /// buscamos menciones directas a usuarios
+      foreach($comment->get_users_mentioned($user) as $u)
+      {
+         $noti = new ke_notification();
+         $noti->user_id = $u->id;
+         $noti->link = KE_PATH.'#chat';
+         $noti->set_chat_mention($user, $text);
+         $noti->save();
+      }
+      
+      $this->history[] = $comment;
       $this->save();
    }
    

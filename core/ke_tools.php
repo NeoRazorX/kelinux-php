@@ -100,8 +100,8 @@ class ke_tools
           "<small>$1</small>",
           "<code>$1</code>",
           "<img src=\"$1\" />",
-          "<a href=\"$1\" target=\"_Blank\">$1</a>",
-          "<a href=\"$1\" target=\"_Blank\">$2</a>",
+          "<a href=\"$1\" target=\"_blank\">$1</a>",
+          "<a href=\"$1\" target=\"_blank\">$2</a>",
           "<div><iframe width=\"420\" height=\"345\" src=\"http://www.youtube.com/embed/$1\"".
              "frameborder=\"0\" allowfullscreen></iframe></div>"
       );
