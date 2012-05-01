@@ -42,4 +42,16 @@
 </div>
 {/if}
 
+<div class="rounded">
+   <h1>
+      Búsquedas:
+      <span class="num_answers">{$kec->search->total()}</span>
+   </h1>
+   <ul class="horizontal">
+      {loop="$kec->search->get_history()"}
+      <li><b>{$value->query}</b> ({$value->times})</li>
+      {/loop}
+   </ul>
+</div>
+
 {include="footer"}

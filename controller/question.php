@@ -104,6 +104,21 @@ class question extends ke_controller
          return $this->title;
    }
    
+   public function get_tags()
+   {
+      if($this->question)
+      {
+         $tags = array();
+         foreach($this->question->get_communities() as $c)
+            $tags[] = $c->name;
+         foreach($this->search->get_tags($this->question->text) as $t)
+            $tags[] = $t->query;
+         return join(', ', $tags);
+      }
+      else
+         parent::get_tags();
+   }
+   
    private function add_reward()
    {
       $this->template = FALSE; /// desactivamos el motor de templates

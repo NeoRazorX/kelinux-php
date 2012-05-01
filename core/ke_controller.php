@@ -22,6 +22,7 @@ require_once 'model/ke_user.php';
 require_once 'model/ke_chat.php';
 require_once 'model/ke_community.php';
 require_once 'model/ke_question.php';
+require_once 'model/ke_search.php';
 
 class ke_controller
 {
@@ -32,10 +33,10 @@ class ke_controller
    public $messages;
    public $errors;
    private $uptime;
-   public $query;
    public $user;
    public $chat;
    public $community;
+   public $search;
    private $db_history_enabled;
 
    public function __construct($n='not_found', $t='page not found')
@@ -50,13 +51,9 @@ class ke_controller
       $this->db = new ke_db();
       if( $this->db->connect() )
       {
-         if( isset($_POST['query']) )
-            $this->query = $_POST['query'];
-         else
-            $this->query = '';
-         
          $this->chat = new ke_chat();
          $this->community = new ke_community();
+         $this->search = new ke_search();
          
          if( isset($_GET['logout']) )
             $this->logout();
@@ -223,10 +220,10 @@ class ke_controller
    
    public function get_tags()
    {
-      $tag = array();
+      $tags = array();
       foreach($this->community->all() as $c)
-         $tag[] = $c->name;
-      return join(', ', $tag);
+         $tags[] = $c->name;
+      return join(', ', $tags);
    }
    
    public function get_description()
