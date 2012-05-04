@@ -228,7 +228,7 @@ class ke_controller
    
    public function get_description()
    {
-      return KE_NAME." es una red solical que tiene como misión solucionar
+      return KE_NAME." es una red social que tiene como misión solucionar
          todos los problemas que puedas tener con Linux, con cualquier
          distribución: Ubuntu, Linux Mint, Debian, Fedora, OpenSuSE ...
          y sin importar cuanto sepas de informática!";

@@ -44,6 +44,8 @@ class admin extends ke_controller
                   $this->enable_db_history(FALSE);
                else if($_GET['param1'] == 'clean_chat')
                   $this->chat->clean();
+               else if($_GET['param1'] == 'clean_searches')
+                  $this->search->clean();
             }
          }
       }

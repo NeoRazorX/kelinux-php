@@ -35,25 +35,34 @@ class ke_search extends ke_cache
       $this->set('search_history', $this->history);
    }
    
+   public function clean()
+   {
+      $this->history = array();
+      $this->save();
+   }
+
    public function new_search()
    {
-      $question = new ke_question();
-      $encontrada = FALSE;
-      
-      foreach($this->history as $h)
+      if($this->query != '')
       {
-         if($h->query == $this->query)
+         $question = new ke_question();
+         $encontrada = FALSE;
+         foreach($this->history as $h)
          {
-            $h->times++;
-            $encontrada = TRUE;
-            break;
+            if($h->query == $this->query)
+            {
+               $h->times++;
+               $encontrada = TRUE;
+               break;
+            }
          }
+         if( !$encontrada )
+            $this->history[] = new ke_search_line($this->query);
+         $this->save();
+         return $question->search($this->query);
       }
-      if( !$encontrada )
-         $this->history[] = new ke_search_line($this->query);
-      
-      $this->save();
-      return $question->search($this->query);
+      else
+         return array();
    }
    
    public function get_history()

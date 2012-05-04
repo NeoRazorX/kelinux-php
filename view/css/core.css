@@ -318,6 +318,7 @@ div.questions div.question_box a.question {
 
 div.questions div.question_box a.question div.resume {
    margin-top: 3px;
+   text-align: justify;
 }
 
 div.answers {
@@ -479,6 +480,7 @@ div.reward2 a {
 div.long_text {
    padding-top: 10px;
    padding-bottom: 10px;
+   text-align: justify;
 }
 
 code {
