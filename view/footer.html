@@ -10,11 +10,16 @@
       </span>
    </h1>
    <textarea name="pregunta" cols="90" rows="20"></textarea>
+   <div>
    <b>Comunidades:</b>
    {loop="$kec->community->all()"}
       <input id="ch_comm_{$value->id}" type="checkbox" name="community[]" value="{$value->id}"/>
       <label for="ch_comm_{$value->id}">{$value->name}</label> &nbsp;
    {/loop}
+   </div>
+   {if condition="!$kec->user"}
+      {$kec->captcha->get_html()}
+   {/if}
 </div>
 </form>
 <div class="popup" id="popup_chat">

@@ -218,17 +218,28 @@ class question extends ke_controller
 
    private function new_answer()
    {
-      $answer = new ke_answer();
-      $answer->question_id = $this->question->id;
-      $answer->num = ($this->question->num_answers+1);
-      $answer->set_text($_POST['new_answer']);
+      $continuar = FALSE;
       if($this->user)
-         $answer->user_id = $this->user->id;
-      
-      if( $answer->save() )
-         $this->new_message("Respuesta guardada correctamente");
+         $continuar = TRUE;
+      else if( $this->captcha->solved() )
+         $continuar = TRUE;
       else
-         $this->new_error("¡Imposible guardar la respuesta!");
+         $this->new_error("Debes resolver el captcha");
+      
+      if($continuar)
+      {
+         $answer = new ke_answer();
+         $answer->question_id = $this->question->id;
+         $answer->num = ($this->question->num_answers+1);
+         $answer->set_text($_POST['new_answer']);
+         if($this->user)
+            $answer->user_id = $this->user->id;
+         
+         if( $answer->save() )
+            $this->new_message("Respuesta guardada correctamente");
+         else
+            $this->new_error("¡Imposible guardar la respuesta!");
+      }
    }
    
    private function edit_answer()

@@ -23,6 +23,7 @@ require_once 'model/ke_chat.php';
 require_once 'model/ke_community.php';
 require_once 'model/ke_question.php';
 require_once 'model/ke_search.php';
+require_once 'model/ke_captcha.php';
 
 class ke_controller
 {
@@ -38,6 +39,7 @@ class ke_controller
    public $community;
    public $search;
    private $db_history_enabled;
+   public $captcha;
 
    public function __construct($n='not_found', $t='page not found')
    {
@@ -54,6 +56,7 @@ class ke_controller
          $this->chat = new ke_chat();
          $this->community = new ke_community();
          $this->search = new ke_search();
+         $this->captcha = new ke_captcha();
          
          if( isset($_GET['logout']) )
             $this->logout();

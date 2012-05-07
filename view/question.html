@@ -225,6 +225,9 @@
    <div>
       <form action="{$kec->url()}" method="post">
          <textarea name="new_answer" rows="10" cols="90"></textarea>
+         {if condition="!$kec->user"}
+            {$kec->captcha->get_html()}
+         {/if}
          <input type="submit" value="enviar"/>
          <a href="{$kec->get_path()}help#bbcode" target="_Blank">BBcode habilitado</a> |
          <a href="http://www.imgur.com" target="_Blank">Puedes insertar imágenes usando el servicio imgur (pega aquí el BBcode)</a>
