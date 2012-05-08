@@ -81,11 +81,11 @@
       $("#b_edit_question").click(function(event) {
          event.preventDefault();
          $("#shadow_box").show();
-         $('#popup_edit_question').show();
          $('#popup_edit_question').css({
             left: ($(window).width() - $('#popup_edit_question').outerWidth())/2,
             top: ($(window).height() - $('#popup_edit_question').outerHeight())/2
          });
+         $('#popup_edit_question').show();
       });
       $("#b_delete_question").click(function(event) {
          event.preventDefault();

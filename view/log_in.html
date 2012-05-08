@@ -55,32 +55,39 @@
    });
 </script>
 
-<div class="rounded">
-   <form action="{$kec->url()}" method="post">
-      <h1>
-         ¿Tienes una cuenta?
-         <span><input type="submit" value="entrar"/></span>
-      </h1>
-      Email: <input type="text" name="l_email" maxlength="50"/>
-      Contraseña: <input type="password" name="l_password" size="10" maxlength="10"/>
-   </form>
-   <form name="f_forgotten" action="{$kec->url()}" method="post">
-      <a id="b_password_forgotten" href="#">he olvidado mi contraseña</a>
-      <input type="hidden" name="password_forgotten" value=""/>
-   </form>
-</div>
-
-<form action="{$kec->url()}" method="post">
-   <div class="rounded">
-      <h1>
-         ¿NO tienes una cuenta?
-         <span><input type="submit" value="registrarse"/></span>
-      </h1>
-      Nick: <input type="text" name="n_nick" size="16" maxlength="16"/>
-      Email: <input type="text" name="n_email" maxlength="50"/>
-      Contraseña: <input type="password" name="n_password" size="10" maxlength="10"/>
-   </div>
-</form>
+<table width="100%">
+   <tr>
+      <td valign="top">
+      <div class="rounded">
+      <form action="{$kec->url()}" method="post">
+         <h1>
+            ¿Tienes una cuenta?
+            <span><input type="submit" value="entrar"/></span>
+         </h1>
+         Email: <input type="text" name="l_email" maxlength="50"/>
+         Contraseña: <input type="password" name="l_password" size="10" maxlength="10"/>
+      </form>
+      <form name="f_forgotten" action="{$kec->url()}" method="post">
+         <a id="b_password_forgotten" href="#">he olvidado mi contraseña</a>
+         <input type="hidden" name="password_forgotten" value=""/>
+      </form>
+      </div>
+      </td>
+      <td valign="top">
+      <form action="{$kec->url()}" method="post">
+      <div class="rounded">
+         <h1>
+            ¿NO tienes una cuenta?
+            <span><input type="submit" value="registrarse"/></span>
+         </h1>
+         Nick: <input type="text" name="n_nick" size="16" maxlength="16"/>
+         Email: <input type="text" name="n_email" maxlength="50"/>
+         Contraseña: <input type="password" name="n_password" size="10" maxlength="10"/>
+      </div>
+      </form>
+      </td>
+   </tr>
+</table>
 {/if}
 
 {include="footer"}

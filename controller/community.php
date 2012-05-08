@@ -37,13 +37,27 @@ class community extends ke_controller
             if( isset($_GET['param2']) )
             {
                if($_GET['param2'] == 'join')
-               {
                   $this->scommunity->add_user( $this->user->id );
-               }
                else if($_GET['param2'] == 'leave')
-               {
                   $this->scommunity->rm_user( $this->user->id );
+               else if($_GET['param2'] == 'delete' AND $this->user->is_admin())
+               {
+                  if( $this->scommunity->delete() )
+                  {
+                     $this->new_message("Comunidad eliminada correctamente");
+                     $this->scommunity = FALSE;
+                  }
+                  else
+                     $this->new_error("¡Imposible eliminar la comunidad!");
                }
+            }
+            else if( isset($_POST['edit_community']) )
+            {
+               $this->scommunity->set_description($_POST['description']);
+               if( $this->scommunity->save() )
+                  $this->new_message("Comunidad modificada correctamente");
+               else
+                  $this->new_error("¡Imposible modificar la comunidad!");
             }
          }
          else

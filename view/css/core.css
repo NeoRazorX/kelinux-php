@@ -95,7 +95,7 @@ h1 a.selected {
    border-bottom-right-radius: 2px 2px;
 }
 
-h1 a#b_new_community, h1 a.button {
+a.button {
    display: inline-block;
    color: white;
    text-decoration: none;
@@ -108,11 +108,11 @@ h1 a#b_new_community, h1 a.button {
    border-bottom-right-radius: 2px 2px;
 }
 
-h1 a#b_new_community {
+a#b_new_community {
    background-color: #D74937;
 }
 
-h1 a.button {
+a.button {
    background-color: #4A8CF7;
 }
 

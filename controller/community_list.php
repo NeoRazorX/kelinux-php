@@ -30,11 +30,22 @@ class community_list extends ke_controller
       {
          if( $this->community->set_name($_POST['cname']) )
          {
-            $this->community->set_description($_POST['cdesc']);
-            if( $this->community->save() )
-               header('location: '.$this->community->url());
+            $continuar = FALSE;
+            if($this->user)
+               $continuar = TRUE;
+            else if( $this->captcha->solved() )
+               $continuar = TRUE;
             else
-               $this->new_error("¡Imposible crear la comunidad! ".$this->community->errors);
+               $this->new_error("Debes resolver el captcha");
+            
+            if($continuar)
+            {
+               $this->community->set_description($_POST['cdesc']);
+               if( $this->community->save() )
+                  header('location: '.$this->community->url());
+               else
+                  $this->new_error("¡Imposible crear la comunidad! ".$this->community->errors);
+            }
          }
          else
             $this->new_error("¡Imposible crear la comunidad! ".$this->community->errors);

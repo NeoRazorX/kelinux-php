@@ -19,7 +19,7 @@
    <h1>
       Comunidades:
       <span>
-         <a id="b_new_community" href="{$kec->url()}">nueva comunidad</a>
+         <a class="button" id="b_new_community" href="{$kec->url()}">nueva comunidad</a>
       </span>
    </h1>
    <ul class="horizontal">
@@ -48,6 +48,9 @@
          <br/>
          <input type="text" name="cdesc" size="90" maxlength="200"/>
       </div>
+      {if condition="!$kec->user"}
+         <br/>{$kec->captcha->get_html()}
+      {/if}
    </div>
 </form>
 

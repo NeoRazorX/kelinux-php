@@ -1,22 +1,70 @@
 {include="header"}
 
 {if condition="$kec->scommunity"}
+<script type="text/javascript">
+   $(document).ready(function() {
+      $("#b_edit_community").click(function(event) {
+         event.preventDefault();
+         $("#shadow_box").show();
+         $('#popup_edit_community').css({
+            left: ($(window).width() - $('#popup_edit_community').outerWidth())/2,
+            top: ($(window).height() - $('#popup_edit_community').outerHeight())/2
+         });
+         $('#popup_edit_community').show();
+      });
+      $("#b_delete_community").click(function(event) {
+         event.preventDefault();
+         if( confirm("¿Realmente deseas eliminar esta comunidad?") )
+            window.location.href = "{$kec->scommunity->url()}/delete";
+      });
+   });
+</script>
+
 <div class="rounded">
    <h1>
       <a href="{$kec->url()}">{$kec->scommunity->name}</a>
       {if condition="$kec->user"}
       <span>
-         {if condition="$kec->scommunity->user_is_member($kec->user->id)"}
-            <a class="button" href="{$kec->url()}/leave">abandonar</a>
-         {else}
-            <a class="button" href="{$kec->url()}/join">unirte</a>
+         Creada {$kec->scommunity->created_timesince()}
+         {if condition="$kec->user"}
+            {if condition="$kec->user->is_admin()"}
+               <a class="button" id="b_edit_community" href="#">editar</a>
+            {/if}
          {/if}
       </span>
       {/if}
    </h1>
-   <span class="date">Creada {$kec->scommunity->created_timesince()}</span>
-   {$kec->scommunity->description}
+   <table width="100%">
+      <tr>
+         <td><div class="long_text">{$kec->scommunity->description}</div></td>
+         <td align="right">
+            {if condition="$kec->scommunity->user_is_member($kec->user->id)"}
+               <a class="button" href="{$kec->url()}/leave">abandonar</a>
+            {else}
+               <a class="button" href="{$kec->url()}/join">unirte</a>
+            {/if}
+         </td>
+      </tr>
+   </table>
 </div>
+
+{if condition="$kec->user"}
+   {if condition="$kec->user->is_admin()"}
+   <form name="f_edit_community" action="{$kec->url()}" method="post">
+   <input type="hidden" name="edit_community" value="TRUE"/>
+   <div class="popup" id="popup_edit_community">
+      <h1>
+         Editar:
+         <span>
+            <input type="button" id="b_delete_community" value="eliminar"/> &nbsp;
+            <input type="submit" value="guardar"/>
+         </span>
+      </h1>
+      <input type="text" name="description" size="90" maxlength="200" value="{$kec->scommunity->description}"/>
+   </div>
+   </form>
+   {/if}
+{/if}
 
 <div class="rounded">
    <h1>Preguntas:</h1>
