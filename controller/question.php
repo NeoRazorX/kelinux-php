@@ -122,8 +122,9 @@ class question extends ke_controller
    private function add_reward()
    {
       $this->template = FALSE; /// desactivamos el motor de templates
+      $mensaje = '';
       if( $this->question->is_solved() )
-         echo "No puedes añadir recompensa a una pregunta solucionada.";
+         $mensaje = "No puedes añadir recompensa a una pregunta solucionada.";
       else if( $this->user )
       {
          if( $this->user->points > 0 )
@@ -131,32 +132,35 @@ class question extends ke_controller
             if( $this->question->add_reward(1) )
             {
                if( $this->user->add_points(-1) )
-                  echo "OK;".$this->question->reward.";".$this->user->points;
+                  $mensaje = "OK;".$this->question->reward.";".$this->user->points;
                else
                {
-                  echo "¡Error al descontarte los puntos!";
+                  $mensaje = "¡Error al descontarte los puntos!";
                   if( $this->is_db_history_enabled() )
                   {
                      foreach($this->db_history() as $h)
-                        echo "\n".$h;
+                        $mensaje .= "\n".$h;
                   }
                }
             }
             else
             {
-               echo "¡Error al modificar la pregunta!";
+               $mensaje = "¡Error al modificar la pregunta!";
                if( $this->is_db_history_enabled() )
                {
                   foreach($this->db_history() as $h)
-                     echo "\n".$h;
+                     $mensaje .= "\n".$h;
                }
             }
          }
          else
-            echo "No tienes suficientes puntos.";
+            $mensaje = "No tienes suficientes puntos para poder votar una pregunta.";
       }
       else
-         echo "Debes iniciar sesión para poder votar.";
+         $mensaje = "Debes iniciar sesión para poder votar una pregunta.";
+      
+      $this->log->new_line($mensaje, $this->url());
+      echo $mensaje;
    }
    
    private function edit_question()
@@ -203,17 +207,17 @@ class question extends ke_controller
          {
             if( $this->question->delete() )
             {
-               $this->new_message("Pregunta eliminada correctamente");
+               $this->new_message("Pregunta eliminada correctamente.");
                $this->question = FALSE;
             }
             else
                $this->new_error("¡Imposible eliminar la pregunta!");
          }
          else
-            $this->new_error("No eres administrador.");
+            $this->new_error("No eres administrador. No puedes eliminar la pregunta.");
       }
       else
-         $this->new_error("Debes iniciar sesión");
+         $this->new_error("Debes iniciar sesión para eliminar la pregunta.");
    }
 
    private function new_answer()
@@ -224,7 +228,7 @@ class question extends ke_controller
       else if( $this->captcha->solved() )
          $continuar = TRUE;
       else
-         $this->new_error("Debes resolver el captcha");
+         $this->new_error("Debes resolver el captcha para para contestar.");
       
       if($continuar)
       {
@@ -262,10 +266,10 @@ class question extends ke_controller
                $this->new_error("¡Respuesta no encontrada!");
          }
          else
-            $this->new_error('No eres administrador');
+            $this->new_error('No eres administrador. No puedes editar una respuesta.');
       }
       else
-         $this->new_error('Debes iniciar sesión');
+         $this->new_error('Debes iniciar sesión para poder editar una respuesta.');
    }
    
    private function delete_answer()
@@ -287,15 +291,16 @@ class question extends ke_controller
                $this->new_error("¡Respuesta no encontrada!");
          }
          else
-            $this->new_error('No eres administrador');
+            $this->new_error('No eres administrador, no puedes eliminar una respuesta.');
       }
       else
-         $this->new_error('Debes iniciar sesión');
+         $this->new_error('Debes iniciar sesión para poder eliminar una respuesta.');
    }
 
    private function vote_answer()
    {
       $this->template = FALSE; /// desactivamos el motor de templates
+      $mensaje = '';
       if( $this->user )
       {
          if( $this->user->points > 0 )
@@ -310,47 +315,51 @@ class question extends ke_controller
                      $answer->user->add_points(1); /// los votos positivos suman un punto para el autor
                   
                   if( $this->user->add_points(-1) ) /// votar cuesta 1 punto
-                     echo "OK;".$answer->id.";".$answer->grade.";".$this->user->points;
+                     $mensaje = "OK;".$answer->id.";".$answer->grade.";".$this->user->points;
                   else
                   {
-                     echo "¡Error al descontarte los puntos!";
+                     $mensaje = "¡Error al descontarte los puntos!";
                      if( $this->is_db_history_enabled() )
                      {
                         foreach($this->db_history() as $h)
-                           echo "\n".$h;
+                           $mensaje .= "\n".$h;
                      }
                   }
                }
                else
                {
-                  echo "¡Error al modificar la respuesta!";
+                  $mensaje = "¡Error al modificar la respuesta!";
                   if( $this->is_db_history_enabled() )
                   {
                      foreach($this->db_history() as $h)
-                        echo "\n".$h;
+                        $mensaje .= "\n".$h;
                   }
                }
             }
             else
             {
-               echo "¡Respuesta no encontrada!";
+               $mensaje = "¡Respuesta no encontrada!";
                if( $this->is_db_history_enabled() )
                {
                   foreach($this->db_history() as $h)
-                     echo "\n".$h;
+                     $mensaje .= "\n".$h;
                }
             }
          }
          else
-            echo "No tienes suficientes puntos.";
+            $mensaje = "No tienes suficientes puntos para poder votar una respuesta.";
       }
       else
-         echo "Debes iniciar sesión para poder votar.";
+         $mensaje = "Debes iniciar sesión para poder votar una respuesta.";
+      
+      $this->log->new_line($mensaje, $this->url());
+      echo $mensaje;
    }
    
    private function mark_solution()
    {
       $this->template = FALSE; /// desactivamos el motor de templates
+      $mensaje = '';
       if($this->user)
       {
          /// solamente un administrador o el autor de la pregunta podrá modificarla
@@ -375,42 +384,45 @@ class question extends ke_controller
                      $answer->user->add_points( $this->question->reward );
                   
                   if( $this->question->set_solved() )
-                     echo "OK";
+                     $mensaje = "OK";
                   else
                   {
-                     echo "¡Error al marcar la pregunta como solucionada!";
+                     $mensaje = "¡Error al marcar la pregunta como solucionada!";
                      if( $this->is_db_history_enabled() )
                      {
                         foreach($this->db_history() as $h)
-                           echo "\n".$h;
+                           $mensaje .= "\n".$h;
                      }
                   }
                }
                else
                {
-                  echo "¡Error al marcar la respuesta!";
+                  $mensaje = "¡Error al marcar la respuesta!";
                   if( $this->is_db_history_enabled() )
                   {
                      foreach($this->db_history() as $h)
-                        echo "\n".$h;
+                        $mensaje .= "\n".$h;
                   }
                }
             }
             else
             {
-               echo "¡Respuesta no encontrada!";
+               $mensaje = "¡Respuesta no encontrada!";
                if( $this->is_db_history_enabled() )
                {
                   foreach($this->db_history() as $h)
-                     echo "\n".$h;
+                     $mensaje .= "\n".$h;
                }
             }
          }
          else
-            echo "No tienes permiso para hacer esto.";
+            $mensaje = "No tienes permiso para poder marcar una pregunta como solucionada.";
       }
       else
-         echo "Debes iniciar sesión";
+         $mensaje = "Debes iniciar sesión para poder marcar una pregunta como solucionada.";
+      
+      $this->log->new_line($mensaje, $this->url());
+      echo $mensaje;
    }
 }
 

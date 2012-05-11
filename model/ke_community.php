@@ -279,6 +279,11 @@ class ke_community extends ke_model
       $user = new ke_user();
       $cu = new ke_community_user();
       $culist = $cu->all_from_community($this->id);
+      if( $this->num_users != count($culist) )
+      {
+         $this->num_users = count($culist);
+         $this->save();
+      }
       foreach($culist as $cu2)
       {
          $user2 = $user->get($cu2->user_id);
@@ -340,9 +345,7 @@ class ke_community extends ke_model
       if($communities)
       {
          foreach($communities as $c)
-         {
             $clist[] = new ke_community($c);
-         }
       }
       return $clist;
    }

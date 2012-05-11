@@ -40,7 +40,7 @@ class create extends ke_controller
             else if( $this->captcha->solved() )
                $continuar = TRUE;
             else
-               $this->new_error("Debes resolver el captcha");
+               $this->new_error("Debes resolver el captcha para crear la pregunta.");
             
             if($continuar)
             {

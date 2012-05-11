@@ -38,11 +38,13 @@
       <tr>
          <td><div class="long_text">{$kec->scommunity->description}</div></td>
          <td align="right">
+         {if condition="$kec->user"}
             {if condition="$kec->scommunity->user_is_member($kec->user->id)"}
                <a class="button" href="{$kec->url()}/leave">abandonar</a>
             {else}
                <a class="button" href="{$kec->url()}/join">unirte</a>
             {/if}
+         {/if}
          </td>
       </tr>
    </table>

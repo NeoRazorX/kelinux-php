@@ -19,38 +19,48 @@
 
 class ke_cache
 {
-   private $cache;
-   private $connected;
+   private static $cache;
+   private static $connected;
+   private static $num_subclases;
 
    public function __construct()
    {
-      $this->cache = new Memcache();
-      try
+      if( !isset(self::$cache) )
       {
-         $this->cache->connect(KE_CACHE_HOST, KE_CACHE_PORT);
-         $this->connected = TRUE;
+         self::$cache = new Memcache();
+         try
+         {
+            self::$connected = self::$cache->connect(KE_CACHE_HOST, KE_CACHE_PORT);
+         }
+         catch (Exception $e)
+         {
+            self::$connected = FALSE;
+         }
+         self::$num_subclases = 0;
       }
-      catch (Exception $e)
-      {
-         $this->connected = FALSE;
-      }
+      self::$num_subclases += 1;
    }
    
    public function __destruct()
    {
-      $this->cache->close();
+      if( self::$connected )
+      {
+         self::$num_subclases -= 1;
+         if( self::$num_subclases < 1 )
+            self::$cache->close();
+      }
    }
    
    public function set($key, $object)
    {
-      if($this->connected)
-         $this->cache->set($key, $object, FALSE, 86400);
+      if( self::$connected )
+         self::$cache->set($key, $object, FALSE, 86400);
    }
    
    public function get($key)
    {
-      if($this->connected)
-         return $this->cache->get($key);
+      if( self::$connected )
+         return self::$cache->get($key);
       else
          return FALSE;
    }
@@ -58,9 +68,9 @@ class ke_cache
    public function get_array($key)
    {
       $aa = array();
-      if($this->connected)
+      if( self::$connected )
       {
-         $a = $this->cache->get($key);
+         $a = self::$cache->get($key);
          if($a)
             $aa = $a;
       }
@@ -69,8 +79,8 @@ class ke_cache
 
    public function delete($key)
    {
-      if($this->connected)
-         $this->cache->delete($key);
+      if( self::$connected )
+         self::$cache->delete($key);
    }
 }
 

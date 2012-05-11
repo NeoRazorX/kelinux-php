@@ -37,8 +37,9 @@ class ke_search extends ke_cache
    
    public function clean()
    {
+      unset($this->history);
       $this->history = array();
-      $this->save();
+      $this->delete('search_history');
    }
 
    public function new_search()

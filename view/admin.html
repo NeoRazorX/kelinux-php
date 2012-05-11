@@ -10,6 +10,7 @@
    {/if}
    | <a href="{$kec->url()}/clean_chat">Borrar el historial del chat</a>
    | <a href="{$kec->url()}/clean_searches">Borrar el historial de búsquedas</a>
+   | <a href="{$kec->url()}/clean_log">Borrar el log</a>
 </div>
 
 <div class="rounded">
@@ -37,6 +38,27 @@
       <li><a href="{$value->url()}">{$value->nick}</a> ({$value->points})</li>
       {/loop}
    </ul>
+</div>
+
+<div class="rounded">
+   <table width="100%">
+      <tr>
+         <th>Fecha</th>
+         <th>IP</th>
+         <th>Navegador</th>
+         <th>URL</th>
+         <th>Información</th>
+      </tr>
+      {loop="$kec->log->get_history()"}
+      <tr>
+         <td>{$value->date}</td>
+         <td>{$value->ip}</td>
+         <td>{$value->browser}</td>
+         <td><a href="{$value->url}">{$value->url}</a></td>
+         <td>{$value->info}</td>
+      </tr>
+      {/loop}
+   </table>
 </div>
 {/if}
 

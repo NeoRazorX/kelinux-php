@@ -24,6 +24,7 @@ require_once 'model/ke_community.php';
 require_once 'model/ke_question.php';
 require_once 'model/ke_search.php';
 require_once 'model/ke_captcha.php';
+require_once 'model/ke_log.php';
 
 class ke_controller
 {
@@ -40,6 +41,7 @@ class ke_controller
    public $search;
    private $db_history_enabled;
    public $captcha;
+   public $log;
 
    public function __construct($n='not_found', $t='page not found')
    {
@@ -57,6 +59,7 @@ class ke_controller
          $this->community = new ke_community();
          $this->search = new ke_search();
          $this->captcha = new ke_captcha();
+         $this->log = new ke_log();
          
          if( isset($_GET['logout']) )
             $this->logout();
@@ -149,11 +152,13 @@ class ke_controller
    protected function new_message($msg)
    {
       $this->messages .= $msg . "\n";
+      $this->log->new_line('MESSAGE: ' . $msg, $this->url());
    }
    
    protected function new_error($msg)
    {
       $this->errors .= $msg . "\n";
+      $this->log->new_line('ERROR: ' . $msg, $this->url());
    }
    
    public function db_selects()

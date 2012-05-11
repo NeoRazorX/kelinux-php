@@ -46,6 +46,8 @@ class admin extends ke_controller
                   $this->chat->clean();
                else if($_GET['param1'] == 'clean_searches')
                   $this->search->clean();
+               else if($_GET['param1'] == 'clean_log')
+                  $this->log->clean();
             }
          }
       }

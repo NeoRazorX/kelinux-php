@@ -45,6 +45,9 @@ class sitemap extends ke_controller
          echo '<url><loc>',$q->url(TRUE),'</loc><lastmod>',$fecha[0],'</lastmod><changefreq>always</changefreq><priority>0.8</priority></url>';
       }
       echo '</urlset>';
+      
+      /// añadimos una entrada al log
+      $this->log->new_line('SITEMAP consultado', $this->url());
    }
 }
 

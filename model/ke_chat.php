@@ -31,7 +31,7 @@ class ke_chat_line extends ke_tools
    
    public function __construct($u, $t)
    {
-      $this->date = Date('j-n-Y H:i:s');
+      $this->date = Date('d-m-Y H:i:s');
       
       if($u)
       {
@@ -138,7 +138,7 @@ class ke_chat extends ke_cache
    {
       unset($this->history);
       $this->history = array();
-      $this->save();
+      $this->delete('chat_history');
    }
 }
 
