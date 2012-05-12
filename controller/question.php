@@ -159,7 +159,7 @@ class question extends ke_controller
       else
          $mensaje = "Debes iniciar sesión para poder votar una pregunta.";
       
-      $this->log->new_line($mensaje, $this->url());
+      $this->log->new_line($mensaje);
       echo $mensaje;
    }
    
@@ -352,7 +352,7 @@ class question extends ke_controller
       else
          $mensaje = "Debes iniciar sesión para poder votar una respuesta.";
       
-      $this->log->new_line($mensaje, $this->url());
+      $this->log->new_line($mensaje);
       echo $mensaje;
    }
    
@@ -421,7 +421,7 @@ class question extends ke_controller
       else
          $mensaje = "Debes iniciar sesión para poder marcar una pregunta como solucionada.";
       
-      $this->log->new_line($mensaje, $this->url());
+      $this->log->new_line($mensaje);
       echo $mensaje;
    }
 }

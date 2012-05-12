@@ -152,13 +152,13 @@ class ke_controller
    protected function new_message($msg)
    {
       $this->messages .= $msg . "\n";
-      $this->log->new_line('MESSAGE: ' . $msg, $this->url());
+      $this->log->new_line('MESSAGE: ' . $msg);
    }
    
    protected function new_error($msg)
    {
       $this->errors .= $msg . "\n";
-      $this->log->new_line('ERROR: ' . $msg, $this->url());
+      $this->log->new_line('ERROR: ' . $msg);
    }
    
    public function db_selects()

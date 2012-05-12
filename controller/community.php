@@ -34,30 +34,39 @@ class community extends ke_controller
          if($this->scommunity)
          {
             $this->title .= $this->scommunity->name;
-            if( isset($_GET['param2']) )
+            if( $this->user )
             {
-               if($_GET['param2'] == 'join')
-                  $this->scommunity->add_user( $this->user->id );
-               else if($_GET['param2'] == 'leave')
-                  $this->scommunity->rm_user( $this->user->id );
-               else if($_GET['param2'] == 'delete' AND $this->user->is_admin())
+               if( isset($_GET['param2']) )
                {
-                  if( $this->scommunity->delete() )
+                  if($_GET['param2'] == 'join')
                   {
-                     $this->new_message("Comunidad eliminada correctamente");
-                     $this->scommunity = FALSE;
+                     $this->scommunity->add_user( $this->user->id );
+                     $this->log->new_line($this->user->nick.' se une a la comunidad '.$this->scommunity->name);
                   }
-                  else
-                     $this->new_error("¡Imposible eliminar la comunidad!");
+                  else if($_GET['param2'] == 'leave')
+                  {
+                     $this->scommunity->rm_user( $this->user->id );
+                     $this->log->new_line($this->user->nick.' abandona la comunidad '.$this->scommunity->name);
+                  }
+                  else if($_GET['param2'] == 'delete' AND $this->user->is_admin())
+                  {
+                     if( $this->scommunity->delete() )
+                     {
+                        $this->new_message("Comunidad eliminada correctamente");
+                        $this->scommunity = FALSE;
+                     }
+                     else
+                        $this->new_error("¡Imposible eliminar la comunidad!");
+                  }
                }
-            }
-            else if( isset($_POST['edit_community']) )
-            {
-               $this->scommunity->set_description($_POST['description']);
-               if( $this->scommunity->save() )
-                  $this->new_message("Comunidad modificada correctamente");
-               else
-                  $this->new_error("¡Imposible modificar la comunidad!");
+               else if( isset($_POST['edit_community']) )
+               {
+                  $this->scommunity->set_description($_POST['description']);
+                  if( $this->scommunity->save() )
+                     $this->new_message("Comunidad modificada correctamente");
+                  else
+                     $this->new_error("¡Imposible modificar la comunidad!");
+               }
             }
          }
          else

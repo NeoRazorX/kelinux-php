@@ -47,7 +47,7 @@ class sitemap extends ke_controller
       echo '</urlset>';
       
       /// añadimos una entrada al log
-      $this->log->new_line('SITEMAP consultado', $this->url());
+      $this->log->new_line('SITEMAP consultado');
    }
 }
 
