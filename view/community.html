@@ -15,10 +15,17 @@
       $("#b_delete_community").click(function(event) {
          event.preventDefault();
          if( confirm("¿Realmente deseas eliminar esta comunidad?") )
-            window.location.href = "{$kec->scommunity->url()}/delete";
+         {
+            document.f_delete.delete_community.value = '{$kec->scommunity->id}';
+            document.f_delete.submit();
+         }
       });
    });
 </script>
+
+<form name="f_delete" action="{$kec->url()}" method="post">
+   <input type="hidden" name="delete_community"/>
+</form>
 
 <div class="rounded">
    <h1>

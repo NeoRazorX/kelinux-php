@@ -56,7 +56,10 @@
    function delete_answer(num)
    {
       if( confirm("¿Realmente deseas eliminar esta respuesta?") )
-         window.location.href = "{$kec->url()}/delete_answer/"+num;
+      {
+         document.f_delete.delete_answer.value = num;
+         document.f_delete.submit();
+      }
    }
    $(document).ready(function() {
       $("#add_reward").click(function(event) {
@@ -90,10 +93,18 @@
       $("#b_delete_question").click(function(event) {
          event.preventDefault();
          if( confirm("¿Realmente deseas eliminar esta pregunta?") )
-            window.location.href = "{$kec->question->url()}/delete";
+         {
+            document.f_delete.delete_question.value = '{$kec->question->id}';
+            document.f_delete.submit();
+         }
       });
    });
 </script>
+
+<form name="f_delete" action="{$kec->url()}" method="post">
+   <input type="hidden" name="delete_question"/>
+   <input type="hidden" name="delete_answer"/>
+</form>
 
 <div class="rounded">
    <h1>

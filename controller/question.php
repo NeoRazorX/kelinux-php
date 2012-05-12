@@ -54,11 +54,11 @@ class question extends ke_controller
                }
             }
             
-            if( isset($_GET['param2']) )
+            if( isset($_POST['delete_question']) )
             {
-               if($_GET['param2'] == 'delete')
+               if(intval($_POST['delete_question']) == $this->question->id)
                   $this->delete_question();
-               else if($_GET['param2'] == 'delete_answer')
+               else if($_POST['delete_answer'] != '')
                   $this->delete_answer();
             }
             else if( isset($_POST['new_answer']) )
@@ -279,7 +279,7 @@ class question extends ke_controller
          if( $this->user->is_admin() )
          {
             $answer = new ke_answer();
-            $answer = $answer->get( intval($_GET['param3']) );
+            $answer = $answer->get( intval($_POST['delete_answer']) );
             if($answer)
             {
                if( $answer->delete() )
