@@ -35,6 +35,9 @@
          <textarea name="comment" rows="3" cols="90"></textarea>
       </form>
       <div id="div_chat_history" class="answers">
+      {if condition="count($kec->chat->get_history())<1"}
+         <div class="message">Si tienes un problema deja un mensaje, enseguida contestará alguien.</div>
+      {/if}
       {loop="$kec->chat->get_history()"}
          {if condition="$counter%2+1==1"}
          <div class="answer_box">
@@ -56,6 +59,9 @@
    </body>
 </html>
 {else}
+   {if condition="count($kec->chat->get_history())<1"}
+      <div class="message">Si tienes un problema deja un mensaje, enseguida contestará alguien.</div>
+   {/if}
    {loop="$kec->chat->get_history()"}
       {if condition="$counter%2+1==1"}
          <div class="answer_box">

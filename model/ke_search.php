@@ -101,7 +101,13 @@ class ke_search extends ke_cache
       foreach($this->history as $h)
       {
          if( preg_match('/'.$h->query.'($|\z|\W)/i', $text) AND !in_array($h, $tags))
-            $tags[] = $h;
+            $tags[] = $h->query;
+      }
+      $other_tags = split(', ', KE_TAGS);
+      foreach($other_tags as $t)
+      {
+         if( preg_match('/'.$t.'($|\z|\W)/i', $text) AND !in_array($t, $tags))
+            $tags[] = $t;
       }
       return $tags;
    }

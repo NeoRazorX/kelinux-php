@@ -79,12 +79,12 @@ class question extends ke_controller
                $this->question->mark_as_readed();
          }
          else
-            $this->new_error("¡Pregunta no encontrada!");
+            $this->new_error("¡Pregunta no encontrada! Es posible que el enlace haya cambiado, usa el buscador.");
       }
       else
       {
          $this->question = FALSE;
-         $this->new_error("¡Pregunta no encontrada!");
+         $this->new_error("¡Pregunta no encontrada! Es posible que el enlace haya cambiado, usa el buscador.");
       }
    }
    
@@ -112,7 +112,7 @@ class question extends ke_controller
          foreach($this->question->get_communities() as $c)
             $tags[] = $c->name;
          foreach($this->search->get_tags($this->question->text) as $t)
-            $tags[] = $t->query;
+            $tags[] = $t;
          return join(', ', $tags);
       }
       else

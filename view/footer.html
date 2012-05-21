@@ -6,6 +6,9 @@
       Crear pregunta:
       <span>
          <a class="link" href="{$kec->get_path()}help#bbcode" target="_Blank">BBcode habilitado</a>
+         {if condition="!$kec->user"}
+            {$kec->captcha->get_html()}
+         {/if}
          <input type="submit" value="crear"/>
       </span>
    </h1>
@@ -17,9 +20,6 @@
       <label for="ch_comm_{$value->id}">{$value->name}</label> &nbsp;
    {/loop}
    </div>
-   {if condition="!$kec->user"}
-      {$kec->captcha->get_html()}
-   {/if}
 </div>
 </form>
 <div class="popup" id="popup_chat">

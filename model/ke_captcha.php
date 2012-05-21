@@ -34,8 +34,8 @@ class ke_captcha
    public function get_html()
    {
       $item = $this->data[ array_rand($this->data) ];
-      return "<b>Captcha:</b> ".$item->pregunta."<input type='hidden' name='captcha_key' value='".$item->key."'/>
-         <input type='text' name='captcha_solution' size='6'/>";
+      return "<div class='captcha'><b>Captcha:</b> ".$item->pregunta."<input type='hidden' name='captcha_key' value='".$item->key."'/>
+         <input type='text' name='captcha_solution' size='6'/></div>";
    }
    
    public function solved()

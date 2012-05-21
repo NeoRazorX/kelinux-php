@@ -162,7 +162,8 @@ class ke_community_question extends ke_model
       $qidlist = array();
       if( isset($cid) )
       {
-         $cq = $this->db->select_limit("SELECT * FROM ".$this->table_name." WHERE communities_id = '".$cid."'", $offset, $limit);
+         $cq = $this->db->select_limit("SELECT * FROM ".$this->table_name." WHERE communities_id = '".$cid."' ORDER BY questions_id DESC",
+                 $offset, $limit);
          if($cq)
          {
             foreach($cq as $c)

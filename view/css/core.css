@@ -255,6 +255,10 @@ div.popup {
    overflow: hidden;
 }
 
+div.popup h1 {
+   border: 0px solid white;
+}
+
 div.rounded {
    margin: 5px;
    padding: 5px;
@@ -514,6 +518,16 @@ table.list {
 
 table.list tr:hover {
    background-color: #d0dfec;
+}
+
+div.captcha {
+   display: inline-block;
+   padding: 2px;
+   border: 1px dashed red;
+}
+
+div.captcha input {
+   border: 1px solid red;
 }
 
 div.footer {
