@@ -46,7 +46,7 @@ class ke_search extends ke_cache
    {
       if($this->query != '')
       {
-         $question = new ke_question();
+         /// guardamos la búsqueda
          $encontrada = FALSE;
          foreach($this->history as $h)
          {
@@ -60,7 +60,24 @@ class ke_search extends ke_cache
          if( !$encontrada )
             $this->history[] = new ke_search_line($this->query);
          $this->save();
-         return $question->search($this->query);
+         
+         $question = new ke_question();
+         $results = $question->search($this->query);
+         if(count($results) > 0)
+            return $results;
+         else
+         {
+            $results = array();
+            foreach(preg_split('/ /', $this->query) as $q)
+            {
+               foreach($question->search($q) as $re2)
+               {
+                  if( !in_array($re2, $results) )
+                     $results[] = $re2;
+               }
+            }
+            return $results;
+         }
       }
       else
          return array();
