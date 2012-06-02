@@ -161,11 +161,14 @@ table.top_menu tr.menu a {
 }
 
 table.top_menu tr.menu a.selected {
-   border: 1px solid white;
+   background-color: silver;
+   color: black;
+   text-decoration: underline;
 }
 
 table.top_menu tr.menu a:hover {
-   background-color: #4A8BF5;
+   background-color: silver;
+   color: black;
 }
 
 table.top_menu a#logo {

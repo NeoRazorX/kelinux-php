@@ -53,8 +53,11 @@ class ke_question extends ke_model
             $this->status = 1;
          
          $this->reward = intval($q['reward']);
-         if( $this->is_solved() )
+         if($this->is_solved() AND $this->reward != 0)
+         {
             $this->reward = 0;
+            $this->save();
+         }
          
          $this->user = new ke_user();
          $this->user = $this->user->get($this->user_id);
@@ -488,6 +491,13 @@ class ke_question extends ke_model
       if($aux)
          $reward = floatval($aux[0]['reward']);
       return $reward;
+   }
+   
+   /// marcamos como antiguas las preguntas no solucionadas con más de 5 meses sin actualizaciones
+   public function mark_old_questions()
+   {
+      $date = Date("Y-m-d", strtotime(Date("Y-m-d") . " -5 month"));
+      return $this->db->exec("UPDATE ".$this->table_name." SET status = 22 WHERE status < 10 AND updated < '".$date."';");
    }
 }
 

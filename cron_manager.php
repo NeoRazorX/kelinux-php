@@ -3,11 +3,13 @@
 require_once 'config.php';
 require_once 'core/ke_db.php';
 require_once 'model/ke_notification.php';
+require_once 'model/ke_question.php';
 require_once 'phpmailer/class.phpmailer.php';
 
 $db = new ke_db();
 if( $db->connect() )
 {
+   /// enviamos las notificaciones pendientes
    $noti = new ke_notification();
    foreach($noti->all2sendmail() as $n)
    {
@@ -36,9 +38,13 @@ if( $db->connect() )
       $n->save();
    }
    
+   /// marcamos las preguntas antiguas
+   $question = new ke_question();
+   $question->mark_old_questions();
+   
    $db->close();
 }
 else
-   echo "¡Imposible conectar con la base de datps!";
+   echo "¡Imposible conectar con la base de datos!";
 
 ?>
