@@ -40,6 +40,15 @@
    </h1>
    Cada usuario tiene una media de {$kec->user->avg_points()} puntos.
 </div>
+
+<div class="rounded">
+   <h1>TOP usuarios:</h1>
+   <ul class="horizontal">
+      {loop="$kec->user->top_users()"}
+      <li><a href="{$value->url()}">{$value->nick}</a> ({$value->points})</li>
+      {/loop}
+   </ul>
+</div>
 {/if}
 
 <div class="rounded">

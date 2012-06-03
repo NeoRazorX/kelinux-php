@@ -32,10 +32,10 @@
 </div>
 
 <div class="rounded">
-   <h1>TOP usuarios:</h1>
+   <h1>TOP páginas:</h1>
    <ul class="horizontal">
-      {loop="$kec->user->top_users()"}
-      <li><a href="{$value->url()}">{$value->nick}</a> ({$value->points})</li>
+      {loop="$kec->log->get_stats()"}
+      <li><a href="{$value.0}">{$value.0}</a> ({$value.1})</li>
       {/loop}
    </ul>
 </div>
@@ -51,7 +51,7 @@
       </tr>
       {loop="$kec->log->get_history()"}
       <tr>
-         <td>{$value->date}</td>
+         <td>{$value->timesince()}</td>
          <td>{$value->ip}</td>
          <td>{$value->browser}</td>
          <td><a href="{$value->url}">{$value->url}</a></td>
