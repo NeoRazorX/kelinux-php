@@ -13,6 +13,16 @@ class ke_search_line
       $this->query = $q;
       $this->times = 1;
    }
+   
+   static public function cmp_obj($a, $b)
+   {
+      if($a->times > $b->times)
+         return -1;
+      else if($a->times == $b->times)
+         return 0;
+      else
+         return 1;
+   }
 }
 
 class ke_search extends ke_cache
@@ -85,23 +95,8 @@ class ke_search extends ke_cache
    
    public function get_history()
    {
-      $resultado = array();
-      while( count($resultado) < count($this->history) )
-      {
-         $seleccionado = NULL;
-         foreach($this->history as $h)
-         {
-            if( !in_array($h, $resultado) )
-            {
-               if( is_null($seleccionado) )
-                  $seleccionado = $h;
-               else if( $h->times > $seleccionado->times )
-                  $seleccionado = $h;
-            }
-         }
-         $resultado[] = $seleccionado;
-      }
-      return $resultado;
+      usort($this->history, array('ke_search_line', 'cmp_obj'));
+      return $this->history;
    }
    
    public function total()

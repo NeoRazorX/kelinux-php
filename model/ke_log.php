@@ -36,6 +36,28 @@ class ke_log_line extends ke_tools
    }
 }
 
+class ke_log_stat
+{
+   public $url;
+   public $clics;
+   
+   public function __construct($u)
+   {
+      $this->url = $u;
+      $this->clics = 1;
+   }
+   
+   static public function cmp_obj($a, $b)
+   {
+      if($a->clics > $b->clics)
+         return -1;
+      else if($a->clics == $b->clics)
+         return 0;
+      else
+         return 1;
+   }
+}
+
 class ke_log extends ke_cache
 {
    private $history;
@@ -67,18 +89,21 @@ class ke_log extends ke_cache
    
    private function url2stats()
    {
-      $encontrada = FALSE;
-      foreach($this->stats as &$s)
+      if(substr($_SERVER['REQUEST_URI'], strlen(KE_PATH), 9) == 'question/')
       {
-         if($s[0] == $_SERVER['REQUEST_URI'])
+         $encontrada = FALSE;
+         foreach($this->stats as &$s)
          {
-            $s[1] += 1;
-            $encontrada = TRUE;
+            if($s->url == $_SERVER['REQUEST_URI'])
+            {
+               $s->clics++;
+               $encontrada = TRUE;
+            }
          }
+         if( !$encontrada )
+            $this->stats[] = new ke_log_stat($_SERVER['REQUEST_URI']);
+         $this->set('stats', $this->stats);
       }
-      if( !$encontrada )
-         $this->stats[] = array($_SERVER['REQUEST_URI'], 1);
-      $this->set('stats', $this->stats);
    }
 
    public function get_history()
@@ -88,18 +113,8 @@ class ke_log extends ke_cache
    
    public function get_stats()
    {
-      $stts = array();
-      while(count($stts) < count($this->stats))
-      {
-         $element = array('/', 0);
-         foreach($this->stats as $s)
-         {
-            if($s[1] > $element[1] AND !in_array($s, $stts))
-               $element = $s;
-         }
-         $stts[] = $element;
-      }
-      return $stts;
+      usort($this->stats, array('ke_log_stat', 'cmp_obj'));
+      return $this->stats;
    }
 }
 

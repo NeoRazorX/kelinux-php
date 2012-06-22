@@ -35,7 +35,7 @@
    <h1>TOP páginas:</h1>
    <ul class="horizontal">
       {loop="$kec->log->get_stats()"}
-      <li><a href="{$value.0}">{$value.0}</a> ({$value.1})</li>
+      <li><a href="{$value->url}">{$value->url}</a> ({$value->clics})</li>
       {/loop}
    </ul>
 </div>
