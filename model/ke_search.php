@@ -72,25 +72,81 @@ class ke_search extends ke_cache
          $this->save();
          
          $question = new ke_question();
-         $results = $question->search($this->query);
+         $results = $question->search($this->query, 0, 100);
          if(count($results) > 0)
-            return $results;
+            return $this->custom_question_sort($results);
          else
          {
             $results = array();
-            foreach(preg_split('/ /', $this->query) as $q)
+            $tags = preg_split('/ /', $this->query);
+            foreach($tags as $q)
             {
-               foreach($question->search($q) as $re2)
+               foreach($question->search($q, 0, 100) as $re2)
                {
                   if( !in_array($re2, $results) )
                      $results[] = $re2;
                }
             }
-            return $results;
+            return $this->custom_question_sort($results, $tags);
          }
       }
       else
          return array();
+   }
+   
+   private function custom_question_sort($questions, $tags=FALSE)
+   {
+      if( !$tags )
+         $tags = array($this->query);
+      
+      $cambios = 0;
+      $i = 0;
+      while($i < count($questions))
+      {
+         $pi = 0;
+         foreach($tags as $t)
+         {
+            /// posición del tag $t en el texto de la pregunta $i
+            $pos = stripos($questions[$i]->text, $t);
+            if($pos !== FALSE)
+               $pi += $pos;
+            else
+               $pi += 1000;
+         }
+         
+         /// array(mejor j, valor pj del mejor j)
+         $cambio = array(-1, 1000000);
+         
+         $j = 1 + $i;
+         while($j < count($questions))
+         {
+            $pj = 0;
+            foreach($tags as $t)
+            {
+               /// posición del tag $t en el texto de la pregunta $j
+               $pos = stripos($questions[$j]->text, $t);
+               if($pos !== FALSE)
+                  $pj += $pos;
+               else
+                  $pj += 1000;
+            }
+            if($pj < $pi AND $pj < $cambio[1])
+            {
+               $cambio[0] = $j;
+               $cambio[1] = $pj;
+            }
+            $j++;
+         }
+         if($cambio[0] > -1)
+         {
+            $aux = $questions[$i];
+            $questions[$i] = $questions[$cambio[0]];
+            $questions[$cambio[0]] = $aux;
+            $cambios++;
+         }
+         $i++;
+      }
+      return $questions;
    }
    
    public function get_history()

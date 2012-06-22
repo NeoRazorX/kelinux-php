@@ -337,13 +337,14 @@ class ke_question extends ke_model
       return $this->communities;
    }
    
-   public function search($query='')
+   public function search($query='', $offset=0, $limit=KE_ITEM_LIMIT)
    {
       $qlist = array();
       if($query != '')
       {
-         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE text LIKE '%".$query."%'
-            OR id IN (SELECT question_id FROM answers WHERE text LIKE '%".$query."%') ORDER BY updated DESC");
+         $query = strtolower($query);
+         $questions = $this->db->select_limit("SELECT DISTINCT * FROM ".$this->table_name." WHERE LOWER(text) LIKE '%".$query."%'
+            OR id IN (SELECT question_id FROM answers WHERE LOWER(text) LIKE '%".$query."%') ORDER BY updated DESC", $offset, $limit);
          if($questions)
          {
             foreach($questions as $q)
