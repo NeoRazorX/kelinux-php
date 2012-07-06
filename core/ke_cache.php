@@ -54,7 +54,7 @@ class ke_cache
    public function set($key, $object)
    {
       if( self::$connected )
-         self::$cache->set($key, $object, FALSE, 86400);
+         self::$cache->set($key, $object, FALSE, 604800);
    }
    
    public function get($key)

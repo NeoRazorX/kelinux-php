@@ -107,9 +107,7 @@ class ke_controller
          if($suser)
          {
             if($suser->log_key == $_COOKIE['log_key'])
-            {
                $this->user = $suser;
-            }
             else
             {
                setcookie('user_id', $suser->id, time()-31536000, KE_PATH);

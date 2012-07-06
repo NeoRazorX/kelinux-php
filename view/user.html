@@ -3,7 +3,8 @@
 {if condition="$kec->suser"}
 <div class="rounded">
    <h1>
-      <a href="{$kec->url()}">{$kec->suser->nick}</a>
+      {$kec->suser->nick}
+      <a href="{$kec->url()}"><img src="{$kec->get_path()}view/img/refresh.png" alt="actualizar" title="actualizar"/></a>
       <span>{$kec->suser->points} puntos</span>
    </h1>
    <span class="date">Creado {$kec->suser->created_timesince()}</span>

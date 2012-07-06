@@ -1,7 +1,7 @@
 {include="header"}
 
 {if condition="$kec->question"}
-<script type="text/javascript">
+   <script type="text/javascript">
    function vote_answer(aid, positive)
    {
       var texto;
@@ -99,16 +99,17 @@
          }
       });
    });
-</script>
+   </script>
+   
+   <form name="f_delete" action="{$kec->url()}" method="post">
+      <input type="hidden" name="delete_question"/>
+      <input type="hidden" name="delete_answer"/>
+   </form>
 
-<form name="f_delete" action="{$kec->url()}" method="post">
-   <input type="hidden" name="delete_question"/>
-   <input type="hidden" name="delete_answer"/>
-</form>
-
-<div class="rounded">
+   <div class="rounded">
    <h1>
-      <a href="{$kec->url()}">{$kec->question->get_status()}</a>
+      {$kec->question->get_status()}
+      <a href="{$kec->url()}"><img src="{$kec->get_path()}view/img/refresh.png" alt="actualizar" title="actualizar"/></a>
       <span>
          creada {$kec->question->created_timesince()},
          modificada {$kec->question->updated_timesince()}
@@ -150,10 +151,10 @@
          </td>
       </tr>
    </table>
-</div>
+   </div>
 
-{if condition="$kec->can_edit"}
-<div class="popup" id="popup_edit_question">
+   {if condition="$kec->can_edit"}
+   <div class="popup" id="popup_edit_question">
    <form action="{$kec->url()}" method="post">
       <h1>
          Editar la pregunta:
@@ -186,13 +187,17 @@
          {/loop}
       </select>
    </form>
-</div>
-{/if}
-
-<div class="rounded">
+   </div>
+   {/if}
+   
+   <div class="rounded">
    <h1>
       Respuestas:
       <span class="num_answers">{$kec->question->num_answers}</span>
+      <span>
+         <a href="https://twitter.com/share" class="twitter-share-button" data-url="{$kec->question->url(TRUE)}" data-via="neorazorx" data-lang="es">Twittear</a>
+         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+      </span>
    </h1>
    <div class="answers">
    {loop="$kec->question->get_answers()"}
@@ -244,9 +249,9 @@
          <a href="http://www.imgur.com" target="_Blank">Puedes insertar imágenes usando el servicio imgur (pega aquí el BBcode)</a>
       </form>
    </div>
-</div>
+   </div>
 
-{if condition="$kec->user"}
+   {if condition="$kec->user"}
    {if condition="$kec->user->is_admin()"}
       {loop="$kec->question->get_answers()"}
       <div id="popup_edit_answer_{$value->id}" class="popup">
@@ -264,7 +269,13 @@
       </div>
       {/loop}
    {/if}
-{/if}
+   {/if}
+{else}
+   <div class="rounded">
+      <center>
+      <img src="{$kec->get_path()}view/img/fuuu_face.png" alt="fuuuuu"/>
+      </center>
+   </div>
 {/if}
 
 {include="footer"}

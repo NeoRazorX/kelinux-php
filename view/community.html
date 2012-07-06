@@ -29,29 +29,41 @@
 
 <div class="rounded">
    <h1>
-      <a href="{$kec->url()}">{$kec->scommunity->name}</a>
+      {$kec->scommunity->name}
+      <a href="{$kec->url()}"><img src="{$kec->get_path()}view/img/refresh.png" alt="actualizar" title="actualizar"/></a>
       {if condition="$kec->user"}
-      <span>
-         Creada {$kec->scommunity->created_timesince()}
-         {if condition="$kec->user"}
-            {if condition="$kec->user->is_admin()"}
-               <a class="button" id="b_edit_community" href="#">editar</a>
+         <span>
+            {if condition="$kec->user"}
+               {if condition="$kec->user->is_admin()"}
+                  <a class="button" id="b_edit_community" href="#">editar</a>
+               {/if}
+               {if condition="$kec->scommunity->user_is_member($kec->user->id)"}
+                  <a class="button" href="{$kec->url()}/leave">abandonar</a>
+               {else}
+                  <a class="button" href="{$kec->url()}/join">unirte</a>
+               {/if}
             {/if}
-         {/if}
-      </span>
+         </span>
       {/if}
    </h1>
    <table width="100%">
       <tr>
-         <td><div class="long_text">{$kec->scommunity->description}</div></td>
-         <td align="right">
-         {if condition="$kec->user"}
-            {if condition="$kec->scommunity->user_is_member($kec->user->id)"}
-               <a class="button" href="{$kec->url()}/leave">abandonar</a>
-            {else}
-               <a class="button" href="{$kec->url()}/join">unirte</a>
-            {/if}
-         {/if}
+         <td>
+            <div class="long_text">
+               {$kec->scommunity->description}
+               <br/><br/>
+               Creada {$kec->scommunity->created_timesince()}
+            </div>
+         </td>
+         <td valign="top" align="right">
+            <g:plusone size="tall"></g:plusone>
+            <script type="text/javascript">
+              (function() {
+                var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+                po.src = 'https://apis.google.com/js/plusone.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+              })();
+            </script>
          </td>
       </tr>
    </table>

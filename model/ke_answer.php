@@ -151,14 +151,20 @@ class ke_answer extends ke_model
             user_id = ".$this->var2str($this->user_id).", question_id = ".$this->var2str($this->question_id).",
             created = ".$this->var2str($this->created).", grade = ".$this->var2str($this->grade)."
             WHERE id = '".$this->id."';";
+         return $this->db->exec($sql);
+      }
+      else if( $this->db->select("SELECT * FROM ".$this->table_name." WHERE question_id = '".$this->question_id."' AND text = '".$this->text."';") )
+      {
+         $this->new_error_msg("¡Respuesta duplicada!");
+         return FALSE;
       }
       else
       {
          $sql = "INSERT INTO ".$this->table_name." (text,user_id,question_id,created,grade) VALUES
             (".$this->var2str($this->text).",".$this->var2str($this->user_id).",".$this->var2str($this->question_id).",
             ".$this->var2str($this->created).",".$this->var2str($this->grade).");";
+         return $this->db->exec($sql);
       }
-      return $this->db->exec($sql);
    }
    
    public function delete()

@@ -242,7 +242,7 @@ class question extends ke_controller
          if( $answer->save() )
             $this->new_message("Respuesta guardada correctamente");
          else
-            $this->new_error("¡Imposible guardar la respuesta!");
+            $this->new_error("¡Imposible guardar la respuesta! ".$answer->errors);
       }
    }
    
