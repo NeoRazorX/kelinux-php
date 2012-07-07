@@ -50,11 +50,10 @@ class ke_tools
    {
       if( isset($v) )
       {
-         $v = strtotime($v);
-         $time = time() - $v;
+         $time = time() - strtotime($v);
          
          if($time <= 60)
-            return 'hace '.round($time/60,0).' segundos';
+            return 'hace '.$time.' segundos';
          else if(60 < $time && $time <= 3600)
             return 'hace '.round($time/60,0).' minutos';
          else if(3600 < $time && $time <= 86400)

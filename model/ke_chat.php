@@ -107,7 +107,18 @@ class ke_chat extends ke_cache
    
    public function get_history()
    {
-      return array_reverse($this->history);
+      $aux = $this->history;
+      if(count($this->history) > 0)
+      {
+         $time = time() - strtotime($this->history[count($this->history)-1]->date);
+         if(120 <= $time)
+         {
+            $comment = new ke_chat_line(FALSE, "Parece que no hay nadie más en el chat. ".
+               "Crea una nueva pregunta con tus dudas y la contestaremos lo antes posible ;-)");
+            $aux[] = $comment;
+         }
+      }
+      return array_reverse($aux);
    }
    
    public function all_comments_readed()

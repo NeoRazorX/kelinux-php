@@ -82,6 +82,11 @@ class ke_user extends ke_model
          return KE_PATH.'user/'.$this->nick;
    }
    
+   public function get_gravatar_url($size=80)
+   {
+      return "http://www.gravatar.com/avatar/".md5( strtolower( trim($this->email) ) )."?s=".$size;
+   }
+   
    public function get_questions($offset=0, $limit=KE_ITEM_LIMIT, $order='updated')
    {
       $question = new ke_question();
@@ -206,11 +211,16 @@ class ke_user extends ke_model
          else
             $this->points = 0;
       }
-      else if($this->points > 500)
-         $this->points = 500;
+      else if($this->points > 300)
+         $this->points = 300;
       return $this->save();
    }
    
+   public function points_per_clic()
+   {
+      return 1+round($this->points/25);
+   }
+
    public function get($id)
    {
       if( isset($id) )

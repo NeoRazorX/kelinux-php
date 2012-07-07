@@ -2,21 +2,31 @@
 
 {if condition="$kec->user"}
 <div class="rounded">
-   <form action="{$kec->url()}" method="post">
-      <h1>
-         Tus datos:
-         <span><input type="submit" value="modificar"/></span>
-      </h1>
-      <input type="hidden" name="edit_user" value="edit_user"/>
-      Nueva contraseña: <input type="password" name="npassword" size="10" maxlength="10"/>
-      Repite la contraseña: <input type="password" name="npassword2" size="10" maxlength="10"/>
-      {if condition="$kec->user->no_emails"}
-         <input id="ch_user_noemails" type="checkbox" name="noemails" value="TRUE" checked="checked"/>
-      {else}
-         <input id="ch_user_noemails" type="checkbox" name="noemails" value="TRUE"/>
-      {/if}
-      <label for="ch_user_noemails">no recibir emails</label>
-   </form>
+   <table width="100%">
+   <tr>
+      <td width="85" valign="top">
+         <a href="http://es.gravatar.com" target="_blank"><img src="{$kec->user->get_gravatar_url()}" alt="avatar"/></a>
+      </td>
+      <td valign="top">
+         <form action="{$kec->url()}" method="post">
+            <h1>
+               Tus datos:
+               <span><input type="submit" value="modificar"/></span>
+            </h1>
+            <input type="hidden" name="edit_user" value="edit_user"/>
+            Nueva contraseña: <input type="password" name="npassword" size="10" maxlength="10"/>
+            Repite la contraseña: <input type="password" name="npassword2" size="10" maxlength="10"/>
+            {if condition="$kec->user->no_emails"}
+               <input id="ch_user_noemails" type="checkbox" name="noemails" value="TRUE" checked="checked"/>
+            {else}
+               <input id="ch_user_noemails" type="checkbox" name="noemails" value="TRUE"/>
+            {/if}
+            <label for="ch_user_noemails">no recibir emails</label>
+         </form>
+         
+      </td>
+   </tr>
+   </table>
 </div>
 
 <div class="rounded">

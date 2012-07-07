@@ -6,9 +6,9 @@
    {
       var texto;
       if(positive)
-         texto = 'vote_answer='+aid+'&points=1';
+         texto = 'vote_answer='+aid+'&points={$kec->points_per_clic}';
       else
-         texto = 'vote_answer='+aid+'&points=-1';
+         texto = 'vote_answer='+aid+'&points=-{$kec->points_per_clic}';
       $.ajax({
          type: 'POST',
          url: '{$kec->url()}',
@@ -68,7 +68,7 @@
             type: 'POST',
             url: '{$kec->url()}',
             dataType: 'html',
-            data: 'add_reward=1',
+            data: 'add_reward={$kec->points_per_clic}',
             success: function(datos) {
                if(datos.substring(0, 2) == 'OK')
                {
@@ -113,9 +113,6 @@
       <span>
          creada {$kec->question->created_timesince()},
          modificada {$kec->question->updated_timesince()}
-         {if condition="$kec->can_edit"}
-            &nbsp; <a id="b_edit_question" class="button" href="#">editar</a>
-         {/if}
       </span>
    </h1>
    <table width="100%">
@@ -123,10 +120,12 @@
          <td valign="top" width="90">
             <div class="reward2">
                <span id="question_reward">{$kec->question->reward}</span>
-               <a href="#" id="add_reward" title="añadir un punto a la recompensa">+1 punto</a>
+               <a href="#" id="add_reward" title="añadir {$kec->points_per_clic} puntos a la recompensa">
+                  +{$kec->points_per_clic} puntos
+               </a>
             </div>
          </td>
-         <td>
+         <td valign="top">
             <div>
                {if condition="$kec->question->user"}
                <a class="nick" href="{$kec->question->user->url()}">{$kec->question->user->nick}</a>
@@ -138,6 +137,9 @@
                {/loop}
             </div>
             <div class="long_text">{$kec->question->text2html()}</div>
+            {if condition="$kec->can_edit"}
+               <a id="b_edit_question" class="button" href="#">editar</a>
+            {/if}
          </td>
          <td valign="top" align="right">
             <g:plusone size="tall"></g:plusone>
@@ -148,6 +150,10 @@
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
               })();
             </script>
+         </td>
+         <td valign="top" align="right">
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="{$kec->question->url(TRUE)}" data-lang="en" data-count="vertical">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
          </td>
       </tr>
    </table>
@@ -194,10 +200,6 @@
    <h1>
       Respuestas:
       <span class="num_answers">{$kec->question->num_answers}</span>
-      <span>
-         <a href="https://twitter.com/share" class="twitter-share-button" data-url="{$kec->question->url(TRUE)}" data-via="neorazorx" data-lang="es">Twittear</a>
-         <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-      </span>
    </h1>
    <div class="answers">
    {loop="$kec->question->get_answers()"}

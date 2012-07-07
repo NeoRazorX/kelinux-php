@@ -2,16 +2,25 @@
 
 {if condition="$kec->suser"}
 <div class="rounded">
-   <h1>
-      {$kec->suser->nick}
-      <a href="{$kec->url()}"><img src="{$kec->get_path()}view/img/refresh.png" alt="actualizar" title="actualizar"/></a>
-      <span>{$kec->suser->points} puntos</span>
-   </h1>
-   <span class="date">Creado {$kec->suser->created_timesince()}</span>
-   Es miembro de:
-   {loop="$kec->suser->get_communities()"}
-      <a class="community" href="{$value->url()}">{$value->name}</a>
-   {/loop}
+   <table width="100%">
+      <tr>
+         <td width="85" valign="top">
+            <a href="http://es.gravatar.com" target="_blank"><img src="{$kec->suser->get_gravatar_url()}" alt="{$kec->suser->nick}"/></a>
+         </td>
+         <td valign="top">
+            <h1>
+               {$kec->suser->nick}
+               <a href="{$kec->url()}"><img src="{$kec->get_path()}view/img/refresh.png" alt="actualizar" title="actualizar"/></a>
+               <span>{$kec->suser->points} puntos</span>
+            </h1>
+            <span class="date">Creado {$kec->suser->created_timesince()}</span>
+            Es miembro de:
+            {loop="$kec->suser->get_communities()"}
+               <a class="community" href="{$value->url()}">{$value->name}</a>
+            {/loop}
+         </td>
+      </tr>
+   </table>
 </div>
 
 <div class="rounded">

@@ -129,9 +129,10 @@ class question extends ke_controller
       {
          if( $this->user->points > 0 )
          {
-            if( $this->question->add_reward(1) )
+            $reward = intval($_POST['add_reward']);
+            if( $this->question->add_reward($reward) )
             {
-               if( $this->user->add_points(-1) )
+               if( $this->user->add_points(0 - $reward) )
                   $mensaje = "OK;".$this->question->reward.";".$this->user->points;
                else
                {

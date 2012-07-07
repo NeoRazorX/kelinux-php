@@ -23,7 +23,7 @@ class community extends ke_controller
    
    public function __construct()
    {
-      parent::__construct('community', 'Comunidad: ');
+      parent::__construct('community', 'Comunidad ');
    }
    
    protected function process()
@@ -33,7 +33,7 @@ class community extends ke_controller
          $this->scommunity = $this->community->get_by_name($_GET['param1']);
          if($this->scommunity)
          {
-            $this->title .= $this->scommunity->name;
+            $this->title .= $this->scommunity->name . ' de '.KE_NAME;
             if( $this->user )
             {
                if( isset($_POST['delete_community']) )

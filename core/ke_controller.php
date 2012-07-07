@@ -42,6 +42,7 @@ class ke_controller
    private $db_history_enabled;
    public $captcha;
    public $log;
+   public $points_per_clic;
 
    public function __construct($n='not_found', $t='page not found')
    {
@@ -75,6 +76,7 @@ class ke_controller
    private function login()
    {
       $this->user = FALSE;
+      $this->points_per_clic = 1;
       
       if( isset($_POST['l_email']) AND isset($_POST['l_password']) )
       {
@@ -90,6 +92,7 @@ class ke_controller
                {
                   setcookie('user_id', $this->user->id, time()+31536000, KE_PATH);
                   setcookie('log_key', $this->user->log_key, time()+31536000, KE_PATH);
+                  $this->points_per_clic = $this->user->points_per_clic();
                }
                else
                   $this->new_error("¡Imposible guardar los datos del usuario!");
@@ -107,7 +110,10 @@ class ke_controller
          if($suser)
          {
             if($suser->log_key == $_COOKIE['log_key'])
+            {
                $this->user = $suser;
+               $this->points_per_clic = $this->user->points_per_clic();
+            }
             else
             {
                setcookie('user_id', $suser->id, time()-31536000, KE_PATH);
@@ -123,6 +129,7 @@ class ke_controller
    private function logout()
    {
       $this->user = FALSE;
+      $this->points_per_clic = 1;
       setcookie('user_id', '', time()-31536000, KE_PATH);
       setcookie('log_key', '', time()-31536000, KE_PATH);
    }

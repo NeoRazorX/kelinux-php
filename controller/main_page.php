@@ -32,11 +32,15 @@ class main_page extends ke_controller
    protected function process()
    {
       $this->question = new ke_question();
-      $this->unreaded = array();
-      foreach($this->question->all() as $u)
+      
+      if( $this->user )
       {
-         if( !$u->is_readed() )
-            $this->unreaded[] = $u;
+         $this->unreaded = array();
+         foreach($this->question->all() as $u)
+         {
+            if( !$u->is_readed() )
+               $this->unreaded[] = $u;
+         }
       }
    }
 }

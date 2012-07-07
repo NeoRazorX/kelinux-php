@@ -35,9 +35,6 @@
          <textarea name="comment" rows="3" cols="90"></textarea>
       </form>
       <div id="div_chat_history" class="answers">
-      {if condition="count($kec->chat->get_history())<1"}
-         <div class="message">Si tienes un problema deja un mensaje, enseguida contestará alguien.</div>
-      {/if}
       {loop="$kec->chat->get_history()"}
          {if condition="$counter%2+1==1"}
          <div class="answer_box">
@@ -45,23 +42,37 @@
          <div class="answer_box2">
          {/if}
             <div class="answer">
-               {if condition="$value->user"}
-                  <a class="nick" href="{$value->user->url()}" target="_Blank">{$value->user->nick}</a>
-               {else}
-                  <b>{$value->nick}</b>
-               {/if}
-               <span class="date">{$value->timesince()}</span>
-               <div class="long_text">{$value->text2html()}</div>
+               <table width="100%">
+                  <tr>
+                     <td width="45" valign="top">
+                        {if condition="$value->user"}
+                        <a href="{$value->user->url()}">
+                           <img src="{$value->user->get_gravatar_url(40)}" alt="{$value->user->nick}"/>
+                        </a>
+                        {else}
+                        <img src="{$kec->get_path()}view/img/anonymous-40.gif" alt="usuario anónimo"/>
+                        {/if}
+                     </td>
+                     <td valign="top">
+                        {if condition="$value->user"}
+                        <a class="nick" href="{$value->user->url()}" target="_blank">{$value->user->nick}</a>
+                        {else}
+                        <b>{$value->nick}</b>
+                        {/if}
+                        <span class="date">{$value->timesince()}</span>
+                        <div class="long_text">{$value->text2html()}</div>
+                     </td>
+                  </tr>
+               </table>
             </div>
          </div>
+      {else}
+         <div class="message">Si tienes un problema deja un mensaje, enseguida contestará alguien.</div>
       {/loop}
       </div>
    </body>
 </html>
 {else}
-   {if condition="count($kec->chat->get_history())<1"}
-      <div class="message">Si tienes un problema deja un mensaje, enseguida contestará alguien.</div>
-   {/if}
    {loop="$kec->chat->get_history()"}
       {if condition="$counter%2+1==1"}
          <div class="answer_box">
@@ -69,14 +80,31 @@
          <div class="answer_box2">
       {/if}
             <div class="answer">
-               {if condition="$value->user"}
-                  <a class="nick" href="{$value->user->url()}" target="_Blank">{$value->user->nick}</a>
-               {else}
-                  <b>{$value->nick}</b>
-               {/if}
-               <span class="date">{$value->timesince()}</span>
-               <div class="long_text">{$value->text2html()}</div>
+               <table width="100%">
+                  <tr>
+                     <td width="45" valign="top">
+                        {if condition="$value->user"}
+                        <a href="{$value->user->url()}">
+                           <img src="{$value->user->get_gravatar_url(40)}" alt="{$value->user->nick}"/>
+                        </a>
+                        {else}
+                        <img src="{$kec->get_path()}view/img/anonymous-40.gif" alt="usuario anónimo"/>
+                        {/if}
+                     </td>
+                     <td valign="top">
+                        {if condition="$value->user"}
+                        <a class="nick" href="{$value->user->url()}" target="_blank">{$value->user->nick}</a>
+                        {else}
+                        <b>{$value->nick}</b>
+                        {/if}
+                        <span class="date">{$value->timesince()}</span>
+                        <div class="long_text">{$value->text2html()}</div>
+                     </td>
+                  </tr>
+               </table>
             </div>
          </div>
+   {else}
+      <div class="message">Si tienes un problema deja un mensaje, enseguida contestará alguien.</div>
    {/loop}
 {/if}

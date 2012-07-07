@@ -31,11 +31,16 @@
    <h1>
       {$kec->scommunity->name}
       <a href="{$kec->url()}"><img src="{$kec->get_path()}view/img/refresh.png" alt="actualizar" title="actualizar"/></a>
-      {if condition="$kec->user"}
-         <span>
+      <span>Creada {$kec->scommunity->created_timesince()}</span>
+   </h1>
+   <table width="100%">
+      <tr>
+         <td valign="top">
+            {$kec->scommunity->description}
+            <br/><br/>
             {if condition="$kec->user"}
                {if condition="$kec->user->is_admin()"}
-                  <a class="button" id="b_edit_community" href="#">editar</a>
+                  <a class="button" id="b_edit_community" href="#">editar</a> &nbsp;
                {/if}
                {if condition="$kec->scommunity->user_is_member($kec->user->id)"}
                   <a class="button" href="{$kec->url()}/leave">abandonar</a>
@@ -43,17 +48,6 @@
                   <a class="button" href="{$kec->url()}/join">unirte</a>
                {/if}
             {/if}
-         </span>
-      {/if}
-   </h1>
-   <table width="100%">
-      <tr>
-         <td>
-            <div class="long_text">
-               {$kec->scommunity->description}
-               <br/><br/>
-               Creada {$kec->scommunity->created_timesince()}
-            </div>
          </td>
          <td valign="top" align="right">
             <g:plusone size="tall"></g:plusone>
@@ -64,6 +58,8 @@
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
               })();
             </script>
+            <a href="https://twitter.com/share" class="twitter-share-button" data-url="{$kec->scommunity->url(TRUE)}" data-lang="en" data-count="vertical">Tweet</a>
+            <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
          </td>
       </tr>
    </table>
@@ -109,7 +105,8 @@
    </div>
 </div>
 
-<div class="rounded">
+   {if condition="$kec->scommunity->num_users > 0"}
+   <div class="rounded">
    <h1>
       Miembros:
       <span class="num_answers">{$kec->scommunity->num_users}</span>
@@ -119,7 +116,8 @@
       <li><a href="{$value->url()}">{$value->nick}</a></li>
    {/loop}
    </ul>
-</div>
+   </div>
+   {/if}
 {/if}
 
 {include="footer"}
