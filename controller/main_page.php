@@ -22,6 +22,7 @@ require_once 'model/ke_question.php';
 class main_page extends ke_controller
 {
    public $question;
+   public $top_question;
    public $unreaded;
 
    public function __construct()
@@ -32,6 +33,17 @@ class main_page extends ke_controller
    protected function process()
    {
       $this->question = new ke_question();
+      
+      if(rand(0, 5) == 0)
+         $this->top_question = FALSE;
+      else
+      {
+         $topq = $this->question->all(0, 10, 'reward');
+         if(count($topq) == 0)
+            $this->top_question = FALSE;
+         else
+            $this->top_question = $topq[rand(0, count($topq)-1)];
+      }
       
       if( $this->user )
       {

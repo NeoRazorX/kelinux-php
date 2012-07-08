@@ -31,7 +31,14 @@
    <h1>
       {$kec->scommunity->name}
       <a href="{$kec->url()}"><img src="{$kec->get_path()}view/img/refresh.png" alt="actualizar" title="actualizar"/></a>
-      <span>Creada {$kec->scommunity->created_timesince()}</span>
+      <span>
+         Creada {$kec->scommunity->created_timesince()}
+         {if condition="$kec->user"}
+            {if condition="$kec->user->is_admin()"}
+               &nbsp; <a class="button" id="b_edit_community" href="#">editar</a>
+            {/if}
+         {/if}
+      </span>
    </h1>
    <table width="100%">
       <tr>
@@ -39,9 +46,6 @@
             {$kec->scommunity->description}
             <br/><br/>
             {if condition="$kec->user"}
-               {if condition="$kec->user->is_admin()"}
-                  <a class="button" id="b_edit_community" href="#">editar</a> &nbsp;
-               {/if}
                {if condition="$kec->scommunity->user_is_member($kec->user->id)"}
                   <a class="button" href="{$kec->url()}/leave">abandonar</a>
                {else}

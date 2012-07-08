@@ -1,22 +1,50 @@
 {include="header"}
 
-{if condition="$kec->user"}
-   <div class="rounded">
-      <table width="100%">
-         <tr>
+<div class="rounded">
+   <table width="100%">
+      <tr>
+         {if condition="$kec->top_question"}
+            <td width="85">
+               <a href="{$kec->top_question->url()}">
+                  {if condition="$kec->top_question->user"}
+                  <img src="{$kec->top_question->user->get_gravatar_url()}" alt="{$kec->top_question->user->nick}"/>
+                  {else}
+                  <img src="{$kec->get_path()}view/img/anonymous.gif" alt="usuario anónimo"/>
+                  {/if}
+               </a>
+            </td>
+            <td valign="top" style="font-size: 15px;">
+               <h1>
+                  {$kec->top_question->get_status()}
+                  <span class="num_answers">{$kec->top_question->num_answers}</span>
+                  <span>{$kec->top_question->updated_timesince()}</span>
+               </h1>
+               <div class="long_text">
+                  {$kec->top_question->resume()}
+                  <a href="{$kec->top_question->url()}">leer más</a>.
+               </div>
+            </td>
+         {else}
             <td width="160"><img src="http://i.imgur.com/MVjDK.gif" alt="no te estreses"/></td>
             <td valign="top" style="font-size: 15px;">
-               Hola {$kec->user->nick},<br/>
-               no dejes que tus pequeños problemas con Linux te hagan desitir.
-               Escribe aquí todas las dudas que tengas y nosotros las contestaremos
-               lo antes posible. Recibirás las respuestas directamente
-               por email ;-)
+               {if condition="$kec->user"}
+                  Hola {$kec->user->nick},<br/>
+                  no dejes que tus pequeños problemas con Linux te hagan desitir.
+                  Escribe aquí todas las dudas que tengas y nosotros las contestaremos
+                  lo antes posible. Recibirás las respuestas directamente
+                  por email ;-)
+               {else}
+                  No dejes que tus pequeños problemas con Linux te hagan desitir.
+                  Escribe aquí todas las dudas que tengas y nosotros las contestaremos
+                  lo antes posible. Además si inicias sesión te enviaremos las respuestas
+                  directamente por email ;-)
+               {/if}
                <br/><br/>
                Ayúdanos a dar a conocer esta iniciativa en <b>google plus</b> y <b>twitter</b>
                pulsando los botones de la derecha ¡Cuantos más seamos mejor!
                Y si tienes sugerencias, deja un mensaje en el chat.
             </td>
-            <td valign="top" align="right">
+            <td valign="top" align="right" width="60">
                <g:plusone size="tall"></g:plusone>
                <script type="text/javascript">
                  (function() {
@@ -26,151 +54,123 @@
                  })();
                </script>
             </td>
-            <td valign="top" align="right">
+            <td valign="top" align="right" width="60">
                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.kelinux.net" data-lang="en" data-count="vertical">Tweet</a>
                <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
             </td>
-         </tr>
-      </table>
-   </div>
+         {/if}
+      </tr>
+   </table>
+</div>
+
+{if condition="$kec->user"}
    <div class="rounded">
-   <h1>
-      Últimas preguntas que has creado o contestado:
-      <span><a class="link" href="{$kec->user->url()}">ver todas tus preguntas</a></span>
-   </h1>
-   <div class="questions">
-      {loop="$kec->user->get_questions(0,4)"}
-      <div class="question_box">
-         <div class="reward">{$value->reward}</div>
-         <a class="question" href="{$value->url()}">
-            <span class="tag">{$value->get_status()}</span>
-            {if condition="$value->user"}
-               <span class="nick">{$value->user->nick}</span>
-            {else}
-               <b>usuario anónimo</b>
-            {/if}
-            <span class="num_answers">{$value->num_answers}</span>
-            <span class="date">{$value->updated_timesince()}</span>
-            <div class="resume">{$value->resume()}</div>
-         </a>
+      <h1>
+         Últimas preguntas que has creado o contestado:
+         <span><a class="link" href="{$kec->user->url()}">ver todas tus preguntas</a></span>
+      </h1>
+      <div class="questions">
+         {loop="$kec->user->get_questions(0,4)"}
+         <div class="question_box">
+            <div class="reward">{$value->reward}</div>
+            <a class="question" href="{$value->url()}">
+               <span class="tag">{$value->get_status()}</span>
+               {if condition="$value->user"}
+                  <span class="nick">{$value->user->nick}</span>
+               {else}
+                  <b>usuario anónimo</b>
+               {/if}
+               <span class="num_answers">{$value->num_answers}</span>
+               <span class="date">{$value->updated_timesince()}</span>
+               <div class="resume">{$value->resume()}</div>
+            </a>
+         </div>
+         {/loop}
       </div>
-      {/loop}
-   </div>
    </div>
    
    {if condition="$kec->unreaded"}
    <div class="rounded">
-   <h1>
-      Pendientes:
-      <span>
-         <a class="link" href="{$kec->get_path()}question_list">ver todas las preguntas</a>
-      </span>
-   </h1>
-   <div class="questions">
-      {loop="$kec->unreaded"}
-      <div class="question_box">
-         <div class="reward">{$value->reward}</div>
-         <a class="question" href="{$value->url()}">
-            <span class="tag">{$value->get_status()}</span>
-            {if condition="$value->user"}
-               <span class="nick">{$value->user->nick}</span>
-            {else}
-               <b>usuario anónimo</b>
-            {/if}
-            <span class="num_answers">{$value->num_answers}</span>
-            <span class="date">{$value->updated_timesince()}</span>
-            <div class="resume">{$value->resume()}</div>
-         </a>
+      <h1>
+         Pendientes:
+         <span>
+            <a class="link" href="{$kec->get_path()}question_list">ver todas las preguntas</a>
+         </span>
+      </h1>
+      <div class="questions">
+         {loop="$kec->unreaded"}
+         <div class="question_box">
+            <div class="reward">{$value->reward}</div>
+            <a class="question" href="{$value->url()}">
+               <span class="tag">{$value->get_status()}</span>
+               {if condition="$value->user"}
+                  <span class="nick">{$value->user->nick}</span>
+               {else}
+                  <b>usuario anónimo</b>
+               {/if}
+               <span class="num_answers">{$value->num_answers}</span>
+               <span class="date">{$value->updated_timesince()}</span>
+               <div class="resume">{$value->resume()}</div>
+            </a>
+         </div>
+         {/loop}
       </div>
-      {/loop}
-   </div>
    </div>
    {else}
    <div class="message">¡Enhorabuena! No tienes preguntas por leer ¿Te atreves con estas?</div>
    <div class="rounded">
-   <h1>
-      Sin solución:
-      <span>
-         <a class="link" href="{$kec->get_path()}question_list">ver todas las preguntas</a>
-      </span>
-   </h1>
-   <div class="questions">
-      {loop="$kec->question->all_unsolved()"}
-      <div class="question_box">
-         <div class="reward">{$value->reward}</div>
-         <a class="question" href="{$value->url()}">
-            <span class="tag">{$value->get_status()}</span>
-            {if condition="$value->user"}
-               <span class="nick">{$value->user->nick}</span>
-            {else}
-               <b>usuario anónimo</b>
-            {/if}
-            <span class="num_answers">{$value->num_answers}</span>
-            <span class="date">{$value->updated_timesince()}</span>
-            <div class="resume">{$value->resume()}</div>
-         </a>
+      <h1>
+         Sin solución:
+         <span>
+            <a class="link" href="{$kec->get_path()}question_list">ver todas las preguntas</a>
+         </span>
+      </h1>
+      <div class="questions">
+         {loop="$kec->question->all_unsolved()"}
+         <div class="question_box">
+            <div class="reward">{$value->reward}</div>
+            <a class="question" href="{$value->url()}">
+               <span class="tag">{$value->get_status()}</span>
+               {if condition="$value->user"}
+                  <span class="nick">{$value->user->nick}</span>
+               {else}
+                  <b>usuario anónimo</b>
+               {/if}
+               <span class="num_answers">{$value->num_answers}</span>
+               <span class="date">{$value->updated_timesince()}</span>
+               <div class="resume">{$value->resume()}</div>
+            </a>
+         </div>
+         {/loop}
       </div>
-      {/loop}
-   </div>
    </div>
    {/if}
 {else}
    <div class="rounded">
-      <table width="100%">
-         <tr>
-            <td width="160"><img src="http://i.imgur.com/MVjDK.gif" alt="no te estreses"/></td>
-            <td valign="top" style="font-size: 15px;">
-               No dejes que tus pequeños problemas con Linux te hagan desitir.
-               Escribe aquí todas las dudas que tengas y nosotros las contestaremos
-               lo antes posible. Además si inicias sesión te enviaremos las respuestas
-               directamente por email ;-)
-               <br/><br/>
-               Ayúdanos a dar a conocer esta iniciativa en <b>google plus</b> y <b>twitter</b>
-               pulsando los botones de la derecha ¡Cuantos más seamos mejor!
-               Y si tienes sugerencias, deja un mensaje en el chat.
-            </td>
-            <td valign="top" align="right">
-               <g:plusone size="tall"></g:plusone>
-               <script type="text/javascript">
-                 (function() {
-                   var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-                   po.src = 'https://apis.google.com/js/plusone.js';
-                   var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-                 })();
-               </script>
-            </td>
-            <td valign="top" align="right">
-               <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.kelinux.net" data-lang="en" data-count="vertical">Tweet</a>
-               <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-            </td>
-         </tr>
-      </table>
-   </div>
-   <div class="rounded">
-   <h1>
-      Historial:
-      <span>
-         <a class="link" href="{$kec->get_path()}question_list">ver todas las preguntas</a>
-      </span>
-   </h1>
-   <div class="questions">
-      {loop="$kec->question->all()"}
-      <div class="question_box">
-         <div class="reward">{$value->reward}</div>
-         <a class="question" href="{$value->url()}">
-            <span class="tag">{$value->get_status()}</span>
-            {if condition="$value->user"}
-               <span class="nick">{$value->user->nick}</span>
-            {else}
-               <b>usuario anónimo</b>
-            {/if}
-            <span class="num_answers">{$value->num_answers}</span>
-            <span class="date">{$value->updated_timesince()}</span>
-            <div class="resume">{$value->resume()}</div>
-         </a>
+      <h1>
+         Historial:
+         <span>
+            <a class="link" href="{$kec->get_path()}question_list">ver todas las preguntas</a>
+         </span>
+      </h1>
+      <div class="questions">
+         {loop="$kec->question->all()"}
+         <div class="question_box">
+            <div class="reward">{$value->reward}</div>
+            <a class="question" href="{$value->url()}">
+               <span class="tag">{$value->get_status()}</span>
+               {if condition="$value->user"}
+                  <span class="nick">{$value->user->nick}</span>
+               {else}
+                  <b>usuario anónimo</b>
+               {/if}
+               <span class="num_answers">{$value->num_answers}</span>
+               <span class="date">{$value->updated_timesince()}</span>
+               <div class="resume">{$value->resume()}</div>
+            </a>
+         </div>
+         {/loop}
       </div>
-      {/loop}
-   </div>
    </div>
 {/if}
 
