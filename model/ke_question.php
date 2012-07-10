@@ -35,6 +35,8 @@ class ke_question extends ke_model
    public $reward;
    public $user;
    public $communities;
+   
+   private static $users;
 
    public function __construct($q=FALSE)
    {
@@ -59,8 +61,7 @@ class ke_question extends ke_model
             $this->save();
          }
          
-         $this->user = new ke_user();
-         $this->user = $this->user->get($this->user_id);
+         $this->find_user();
       }
       else
       {
@@ -73,6 +74,28 @@ class ke_question extends ke_model
          $this->status = 0;
          $this->reward = 1;
          $this->user = FALSE;
+      }
+   }
+   
+   private function find_user()
+   {
+      if( !isset(self::$users) )
+         self::$users = array();
+      
+      $this->user = FALSE;
+      if( !is_null($this->user_id) )
+      {
+         foreach(self::$users as $u)
+         {
+            if($u->id == $this->user_id)
+               $this->user = $u;
+         }
+         if( !$this->user )
+         {
+            $this->user = new ke_user();
+            $this->user = $this->user->get($this->user_id);
+            self::$users[] = $this->user;
+         }
       }
    }
    

@@ -31,6 +31,8 @@ class ke_answer extends ke_model
    public $num;
    public $user;
    
+   private static $users;
+   
    public function __construct($a=FALSE)
    {
       parent::__construct('answers');
@@ -42,8 +44,7 @@ class ke_answer extends ke_model
          $this->question_id = $this->intval($a['question_id']);
          $this->created = $a['created'];
          $this->grade = intval($a['grade']);
-         $this->user = new ke_user();
-         $this->user = $this->user->get($this->user_id);
+         $this->find_user();
       }
       else
       {
@@ -58,6 +59,28 @@ class ke_answer extends ke_model
       $this->num = 1;
    }
    
+   private function find_user()
+   {
+      if( !isset(self::$users) )
+         self::$users = array();
+      
+      $this->user = FALSE;
+      if( !is_null($this->user_id) )
+      {
+         foreach(self::$users as $u)
+         {
+            if($u->id == $this->user_id)
+               $this->user = $u;
+         }
+         if( !$this->user )
+         {
+            $this->user = new ke_user();
+            $this->user = $this->user->get($this->user_id);
+            self::$users[] = $this->user;
+         }
+      }
+   }
+
    public function text2html()
    {
       return $this->var2html($this->text);
@@ -153,7 +176,8 @@ class ke_answer extends ke_model
             WHERE id = '".$this->id."';";
          return $this->db->exec($sql);
       }
-      else if( $this->db->select("SELECT * FROM ".$this->table_name." WHERE question_id = '".$this->question_id."' AND text = '".$this->text."';") )
+      else if( $this->db->select("SELECT * FROM ".$this->table_name." WHERE question_id = '".$this->question_id."'
+                                  AND text = ".$this->var2str($this->text).";") )
       {
          $this->new_error_msg("¡Respuesta duplicada!");
          return FALSE;

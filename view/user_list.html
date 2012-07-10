@@ -4,7 +4,7 @@
    <h1>Usuarios:</h1>
    <ul class="horizontal">
       {loop="$kec->suser->all()"}
-      <li><a href="{$value->url()}">{$value->nick}</a></li>
+      <li><a href="{$value->url()}">{$value->nick}</a> {$value->points}</li>
       {/loop}
    </ul>
 </div>

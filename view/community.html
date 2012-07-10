@@ -87,10 +87,39 @@
    {/if}
 {/if}
 
+   {if condition="$kec->top_question"}
+      <div class="rounded">
+         <table width="100%">
+            <tr>
+               <td width="85">
+                  <a href="{$kec->top_question->url()}">
+                     {if condition="$kec->top_question->user"}
+                     <img src="{$kec->top_question->user->get_gravatar_url()}" alt="{$kec->top_question->user->nick}"/>
+                     {else}
+                     <img src="{$kec->get_path()}view/img/anonymous.gif" alt="usuario anónimo"/>
+                     {/if}
+                  </a>
+               </td>
+               <td valign="top" style="font-size: 15px;">
+                  <h1>
+                     {$kec->top_question->get_status()}
+                     <span class="num_answers">{$kec->top_question->num_answers}</span>
+                     <span>{$kec->top_question->updated_timesince()}</span>
+                  </h1>
+                  <div class="long_text">
+                     {$kec->top_question->resume()}
+                     <a href="{$kec->top_question->url()}">leer más</a>.
+                  </div>
+               </td>
+            </tr>
+         </table>
+      </div>
+   {/if}
+
 <div class="rounded">
    <h1>Preguntas:</h1>
    <div class="questions">
-      {loop="$kec->scommunity->get_questions()"}
+      {loop="$kec->questions"}
       <div class="question_box">
          <div class="reward">{$value->reward}</div>
          <a class="question" href="{$value->url()}">
@@ -107,20 +136,37 @@
       </div>
       {/loop}
    </div>
+   
+   <table width="100%">
+      <tr>
+         <td>
+            {if condition="$kec->anterior_url()!=''"}
+            <a class="next" href="{$kec->anterior_url()}">anterior</a>
+            {/if}
+         </td>
+         <td align="right">
+            {if condition="$kec->siguiente_url()!=''"}
+            <a class="next" href="{$kec->siguiente_url()}">siguiente</a>
+            {/if}
+         </td>
+      </tr>
+   </table>
 </div>
 
    {if condition="$kec->scommunity->num_users > 0"}
-   <div class="rounded">
-   <h1>
-      Miembros:
-      <span class="num_answers">{$kec->scommunity->num_users}</span>
-   </h1>
-   <ul class="horizontal">
-   {loop="$kec->scommunity->get_users()"}
-      <li><a href="{$value->url()}">{$value->nick}</a></li>
-   {/loop}
-   </ul>
-   </div>
+      {if condition="$kec->anterior_url()==''"}
+      <div class="rounded">
+         <h1>
+            Miembros:
+            <span class="num_answers">{$kec->scommunity->num_users}</span>
+         </h1>
+         <ul class="horizontal">
+            {loop="$kec->scommunity->get_users()"}
+               <li><a href="{$value->url()}">{$value->nick}</a></li>
+            {/loop}
+         </ul>
+      </div>
+      {/if}
    {/if}
 {/if}
 

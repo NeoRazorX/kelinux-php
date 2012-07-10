@@ -24,7 +24,7 @@
    </h1>
    <ul class="horizontal">
       {loop="$kec->community->all()"}
-      <li><a href="{$value->url()}">{$value->name}</a> ({$value->num_users})</li>
+      <li><a href="{$value->url()}">{$value->name}</a> {$value->num_users}</li>
       {/loop}
    </ul>
 </div>

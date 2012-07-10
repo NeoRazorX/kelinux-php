@@ -149,9 +149,7 @@ class ke_community_question extends ke_model
          if($cq)
          {
             foreach($cq as $c)
-            {
                $commidlist[] = new ke_community_question($c);
-            }
          }
       }
       return $commidlist;
@@ -164,6 +162,24 @@ class ke_community_question extends ke_model
       {
          $cq = $this->db->select_limit("SELECT * FROM ".$this->table_name." WHERE communities_id = '".$cid."' ORDER BY questions_id DESC",
                  $offset, $limit);
+         if($cq)
+         {
+            foreach($cq as $c)
+               $qidlist[] = new ke_community_question($c);
+         }
+      }
+      return $qidlist;
+   }
+   
+   public function top_from_community($cid, $limit=10)
+   {
+      $qidlist = array();
+      if( isset($cid) )
+      {
+         $cq = $this->db->select_limit("SELECT * FROM ".$this->table_name." as cq, questions as q
+            WHERE cq.questions_id = q.id AND cq.communities_id = '".$cid."' AND q.reward > 0
+            ORDER BY q.reward DESC",
+                 0, $limit);
          if($cq)
          {
             foreach($cq as $c)
@@ -294,12 +310,15 @@ class ke_community extends ke_model
       return $userlist;
    }
    
-   public function get_questions()
+   public function get_questions($offset=0, $top=FALSE)
    {
       $qlist = array();
       $question = new ke_question();
       $cq = new ke_community_question();
-      $cqlist = $cq->all_from_community($this->id);
+      if($top)
+         $cqlist = $cq->top_from_community($this->id);
+      else
+         $cqlist = $cq->all_from_community($this->id, $offset);
       foreach($cqlist as $cq2)
       {
          $question2 = $question->get($cq2->question_id);

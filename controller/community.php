@@ -19,7 +19,10 @@
 
 class community extends ke_controller
 {
+   public $offset;
+   public $questions;
    public $scommunity;
+   public $top_question;
    
    public function __construct()
    {
@@ -34,6 +37,25 @@ class community extends ke_controller
          if($this->scommunity)
          {
             $this->title .= $this->scommunity->name . ' de '.KE_NAME;
+            
+            if( isset($_GET['param2']) )
+               $this->offset = intval($_GET['param2']);
+            else
+            {
+               $this->offset = 0;
+               
+               $topq = $this->scommunity->get_questions(0, TRUE);
+               if($topq)
+               {
+                  if(count($topq) == 0)
+                     $this->top_question = FALSE;
+                  else
+                     $this->top_question = $topq[rand(0, count($topq)-1)];
+               }
+            }
+            
+            $this->questions = $this->scommunity->get_questions($this->offset);
+            
             if( $this->user )
             {
                if( isset($_POST['delete_community']) )
@@ -96,6 +118,22 @@ class community extends ke_controller
          return $this->scommunity->description;
       else
          return $this->title;
+   }
+   
+   public function anterior_url()
+   {
+      $url = '';
+      if($this->offset > 0)
+         $url = $this->url().'/'.($this->offset-KE_ITEM_LIMIT);
+      return $url;
+   }
+   
+   public function siguiente_url()
+   {
+      $url = '';
+      if(count($this->questions) == KE_ITEM_LIMIT)
+         $url = $this->url().'/'.($this->offset+KE_ITEM_LIMIT);
+      return $url;
    }
 }
 
